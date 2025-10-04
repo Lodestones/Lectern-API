@@ -1037,7 +1037,7 @@ public interface IPacketPlayer {
 
     /**
      * Removes a tint from an entity
-     * 
+     *
      * @param uniqueId The unique id of the entity
      */
     void removeTintFromEntity(UUID uniqueId);
@@ -1046,5 +1046,9 @@ public interface IPacketPlayer {
      * Clears all entity tints
      */
     void clearEntityTints();
+
+    void triggerBackroomsIntroCutscene();
+
+    void setFlashlight(boolean active);
 
 }
