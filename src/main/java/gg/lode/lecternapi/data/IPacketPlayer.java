@@ -963,4 +963,6 @@ public interface IPacketPlayer {
 
     void setFlashlight(boolean active);
 
+    void renderParticle(String particleId, double x, double y, double z, float rotationX, float rotationY, float rotationZ, float scale);
+
 }

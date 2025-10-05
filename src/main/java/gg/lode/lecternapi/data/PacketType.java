@@ -52,5 +52,6 @@ public enum PacketType {
     SHOULDER_SURF,
     CHAIN_LEASH,
     BACKROOMS_CUTSCENE,
-    FLASHLIGHT
+    FLASHLIGHT,
+    RENDER_PARTICLE
 }
