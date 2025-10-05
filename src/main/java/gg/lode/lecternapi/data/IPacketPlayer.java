@@ -754,13 +754,6 @@ public interface IPacketPlayer {
     void hideMenu();
 
     /**
-     * Shows a purple border
-     * 
-     * @param shouldShowPurpleBorder Whether the purple border is visible or not.
-     */
-    void shouldShowPurpleBorder(boolean shouldShowPurpleBorder);
-
-    /**
      * Sets the smooth camera
      * 
      * @param shouldSmoothCamera Whether the smooth camera is enabled or not.

@@ -6,7 +6,6 @@ public enum PacketType {
     SKY_COLOR,
     XRAY,
     FOG_COLOR,
-    PURPLE_BORDER,
     RENDER_HEAD,
     BLOCK_SOUND,
     RENDER_TEXTURE,
