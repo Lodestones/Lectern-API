@@ -288,80 +288,6 @@ public interface IPacketPlayer {
     void clearCustomCapes();
 
     /**
-     * Sets a backbling for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #addModelAttach} instead
-     * @param uniqueId The unique id of the player
-     * @param material The material of the backbling
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void setBackbling(UUID uniqueId, Material material);
-
-    /**
-     * Sets a backbling for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #addModelAttach} instead
-     * @param uniqueId  The unique id of the player
-     * @param material  The material of the backbling
-     * @param modelData The model data of the backbling
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void setBackbling(UUID uniqueId, Material material, int modelData);
-
-    /**
-     * Removes a backbling for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #removeModelAttach} instead
-     * @param uniqueId The unique id of the player
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void removeBackbling(UUID uniqueId);
-
-    /**
-     * Clears all backblings for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #clearModelAttachments} instead
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void clearBackblings();
-
-    /**
-     * Sets a hip holster for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #addModelAttach} instead
-     * @param uniqueId The unique id of the player
-     * @param material The material of the hip holster
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void setHipHolster(UUID uniqueId, Material material);
-
-    /**
-     * Sets a hip holster for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #addModelAttach} instead
-     * @param uniqueId  The unique id of the player
-     * @param material  The material of the hip holster
-     * @param modelData The model data of the hip holster
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void setHipHolster(UUID uniqueId, Material material, int modelData);
-
-    /**
-     * Removes a hip holster for the player
-     * 
-     * @deprecated Since 1.0.2, use {@link #removeModelAttach} instead
-     * @param uniqueId The unique id of the player
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void removeHipHolster(UUID uniqueId);
-
-    /**
-     * Clears all hip holsters for the player
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void clearHipHolsters();
-
-    /**
      * Sets a custom skin for the player
      * For resourcepack development, place any textures inside
      * "assets/lodestone/textures/"
@@ -678,12 +604,6 @@ public interface IPacketPlayer {
             float height, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment);
 
     /**
-     * Strikes a thunder
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void strikeThunder();
-
-    /**
      * Renders a texture on the screen
      * 
      * @param textureId The id of the texture
@@ -820,14 +740,6 @@ public interface IPacketPlayer {
      * @param uniqueId The unique id of the player
      */
     void unrenderPlayerHead(UUID uniqueId);
-
-    /**
-     * Shows a storm
-     * 
-     * @param shouldShowStorm Whether the storm is visible or not.
-     */
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    void shouldShowStorm(boolean shouldShowStorm);
 
     /**
      * Shows a menu
