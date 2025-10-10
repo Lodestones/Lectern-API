@@ -546,10 +546,11 @@ public interface IPacketPlayer {
 
     /**
      * Sets the dense fog for the player
-     * 
-     * @param shouldDenseFog Whether the dense fog is enabled or not.
      */
-    void shouldDenseFog(boolean shouldDenseFog);
+    void showDenseFog(float start, float end, float alpha);
+
+    void hideDenseFog();
+
 
     /**
      * Resets the moon color for the player
