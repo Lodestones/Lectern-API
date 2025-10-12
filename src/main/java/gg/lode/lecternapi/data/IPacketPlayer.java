@@ -563,7 +563,7 @@ public interface IPacketPlayer {
      */
     void showDenseFog(float start, float end, float alpha);
 
-    void hideDenseFog();
+    void resetDenseFog();
 
 
     /**
