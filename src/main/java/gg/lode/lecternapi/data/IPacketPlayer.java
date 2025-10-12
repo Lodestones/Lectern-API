@@ -125,7 +125,7 @@ public interface IPacketPlayer {
 
     /**
      * Removes a ping from the player's screen
-     * 
+     *
      * @param id The id of the ping
      */
     void removePing(String id);
@@ -136,8 +136,22 @@ public interface IPacketPlayer {
     void clearAllPings();
 
     /**
+     * Forces an Iris shader!
+     * <p>
+     * assets/{namespace}/shaders/
+     *
+     * @param shaderPath The shader path to use
+     */
+    void forceShader(String shaderPath);
+
+    /**
+     * Stops the force shader
+     */
+    void stopForceShader();
+
+    /**
      * Shakes the screen of the player
-     * 
+     *
      * @param duration  The duration of the shake (in ticks)
      * @param intensity The intensity of the shake (0-1)
      */
