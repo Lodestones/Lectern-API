@@ -53,5 +53,6 @@ public enum PacketType {
     BACKROOMS_CUTSCENE,
     FLASHLIGHT,
     RENDER_PARTICLE,
-    FORCE_SHADER
+    FORCE_SHADER,
+    OVERRIDE_PACK
 }

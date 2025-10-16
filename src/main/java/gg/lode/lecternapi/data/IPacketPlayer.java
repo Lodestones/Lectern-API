@@ -149,6 +149,10 @@ public interface IPacketPlayer {
      */
     void stopForceShader();
 
+    void forcePack(String pack);
+
+    void stopForcePack();
+
     /**
      * Shakes the screen of the player
      *
