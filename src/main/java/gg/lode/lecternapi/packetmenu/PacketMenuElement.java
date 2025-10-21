@@ -1,7 +1,6 @@
 package gg.lode.lecternapi.packetmenu;
 
 import gg.lode.lecternapi.packetmenu.text.TextAlignment;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -87,7 +86,7 @@ public abstract class PacketMenuElement implements InsertionElement, PacketMenuV
         public PacketMenuVisualiser.PendingHide show(String baseId, PacketMenu menu, MenuTransform transform) {
             if (alignment != null) {
                 menu.packetPlayer().renderComponent(
-                        baseId, JSONComponentSerializer.json().serialize(this.component),
+                        baseId, this.component,
                         transform.x(), transform.y(), transform.layer(),
                         transform.scale() * this.size(),
                         transform.horizontalAlignment(),
@@ -96,7 +95,7 @@ public abstract class PacketMenuElement implements InsertionElement, PacketMenuV
                 );
             } else {
                 menu.packetPlayer().renderComponent(
-                        baseId, JSONComponentSerializer.json().serialize(this.component),
+                        baseId, this.component,
                         transform.x(), transform.y(), transform.layer(),
                         transform.scale() * this.size(),
                         transform.horizontalAlignment(),
