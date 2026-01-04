@@ -309,11 +309,13 @@ public interface IPacketPlayer {
      * Sets a custom skin for the player
      * For resourcepack development, place any textures inside
      * "assets/lodestone/textures/"
-     * 
+     *
      * @param uniqueId    The unique id of the player
      * @param texturePath The path to the texture
      */
     void setCustomSkin(UUID uniqueId, String texturePath);
+
+    void setCustomSkinByName(UUID uniqueId, String username);
 
     /**
      * Resets a custom skin for the player
@@ -762,7 +764,7 @@ public interface IPacketPlayer {
 
     /**
      * Shows a menu
-     * 
+     *
      * @param delta The delta of the menu
      */
     void showMenu(float delta);
@@ -772,9 +774,15 @@ public interface IPacketPlayer {
      */
     void hideMenu();
 
+    void setSwapHands(UUID targetUniqueId, PacketAction action);
+
+    void clearSwappedHands();
+
+    void setOutlineShader(boolean isActive);
+
     /**
      * Sets the smooth camera
-     * 
+     *
      * @param shouldSmoothCamera Whether the smooth camera is enabled or not.
      */
     void setSmoothCamera(boolean shouldSmoothCamera);
@@ -875,7 +883,7 @@ public interface IPacketPlayer {
 
     /**
      * Adds a model attach
-     * 
+     *
      * @param id The id of the model attach
      * @param playerUniqueId The unique id of the player
      * @param identifier The identifier of the model attach
@@ -885,9 +893,9 @@ public interface IPacketPlayer {
      * @param offsetY The offset y of the model attach
      * @param offsetZ The offset z of the model attach
      */
-    void addModelAttach(String id, UUID playerUniqueId, String identifier, int customModelData, BodyPart bodyPart,
-            float offsetX, float offsetY, float offsetZ, float scaleX, float scaleY, float scaleZ, float rotationX,
-            float rotationY, float rotationZ);
+    void addModelAttach(String id, UUID playerUniqueId, String identifier, String itemModel, BodyPart bodyPart,
+                        float offsetX, float offsetY, float offsetZ, float scaleX, float scaleY, float scaleZ, float rotationX,
+                        float rotationY, float rotationZ);
 
     /**
      * Removes a model attach

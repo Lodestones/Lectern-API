@@ -14,5 +14,6 @@ public enum PacketAction {
     SET_MUTE,
     SET_DEAFEN,
     SET_MUTE_STATE,
-    SET_DEAFEN_STATE
+    SET_DEAFEN_STATE,
+    SET_NAME
 }
