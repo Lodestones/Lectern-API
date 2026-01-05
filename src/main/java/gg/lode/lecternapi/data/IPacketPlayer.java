@@ -803,14 +803,21 @@ public interface IPacketPlayer {
 
     /**
      * Disables the chunk reload
-     * 
+     *
      * @param shouldDisableChunkReload Whether the chunk reload is disabled or not.
      */
     void shouldDisableChunkReload(boolean shouldDisableChunkReload);
 
     /**
+     * Disables advanved f3 keybinds like copy to clipboard, pi charting etc...
+     *
+     * @param shouldDisableAdvancedF3 Whether to disable the actions or not.
+     */
+    void shouldDisableAdvancedF3(boolean shouldDisableAdvancedF3);
+
+    /**
      * Shows a freddy jumpscare whenever the player closes minecraft.
-     * 
+     *
      * @param shouldAltF4Jumpscare Whether the player gets an alt f4 jumpscare when they close minecraft or not.
      */
     void shouldAltF4Jumpscare(boolean shouldAltF4Jumpscare);
