@@ -66,9 +66,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>gg.lode</groupId>
+            <groupId>com.github.Lodestones</groupId>
             <artifactId>Bookshelf-API</artifactId>
-            <version>1.1.72</version>
+            <version>1.1.71</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
