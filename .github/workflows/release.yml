@@ -32,6 +32,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Lectern-API - v${{ steps.version.outputs.VERSION }}
+          name: Lectern API - v${{ steps.version.outputs.VERSION }}
           files: target/Lectern-API-*.jar
           generate_release_notes: true
