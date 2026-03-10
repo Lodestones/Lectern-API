@@ -48,5 +48,24 @@ public class HWIDAltDetectedEvent extends LecternClientEvent {
      * @param matchingComponents Number of matching hardware components (out of 6)
      */
     public record AltAccount(String uuid, String username, int matchingComponents) {
+
+        /**
+         * Returns the certainty level based on matching hardware components.
+         * <p>
+         * 5-6 out of 6 matching components is considered {@link Certainty#DEFINITIVE}.
+         * 4 out of 6 is considered {@link Certainty#SUSPICIOUS}.
+         * Anything below 4 is {@link Certainty#UNLIKELY}.
+         */
+        public Certainty getCertainty() {
+            if (matchingComponents >= 5) return Certainty.DEFINITIVE;
+            if (matchingComponents == 4) return Certainty.SUSPICIOUS;
+            return Certainty.UNLIKELY;
+        }
+    }
+
+    public enum Certainty {
+        DEFINITIVE,
+        SUSPICIOUS,
+        UNLIKELY
     }
 }
