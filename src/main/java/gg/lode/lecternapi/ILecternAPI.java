@@ -39,4 +39,8 @@ public interface ILecternAPI {
     ICutsceneManager getCutsceneManager();
 
     IPingManager getPingManager();
+
+    IFlareManager getFlareManager();
+
+    IAuraManager getAuraManager();
 }

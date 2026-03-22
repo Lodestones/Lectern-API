@@ -100,12 +100,13 @@ public interface IHUDManager {
      * @param identifier the username or UUID of the player to render
      * @param x horizontal position
      * @param y vertical position
+     * @param layer the render layer (z-index)
      * @param width the render width
      * @param height the render height
      * @param horizontalAlignment horizontal alignment
      * @param verticalAlignment vertical alignment
      */
-    void renderPlayer(Player player, String reference, String identifier, float x, float y, float width, float height, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment);
+    void renderPlayer(Player player, String reference, String identifier, float x, float y, int layer, float width, float height, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment);
 
     /**
      * Removes a rendered player bust from the player's HUD.
