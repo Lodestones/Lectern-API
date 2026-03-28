@@ -9,7 +9,7 @@ public sealed interface CutsceneAction {
 
     record ShowTexture(int tick, String ref, String textureId, MenuTransform transform, int width, int height) implements CutsceneAction {}
     record HideTexture(int tick, String ref) implements CutsceneAction {}
-    record ShowText(int tick, String ref, String text, MenuTransform transform, float scale) implements CutsceneAction {}
+    record ShowText(int tick, String ref, String text, MenuTransform transform, float scale, String textAlign) implements CutsceneAction {}
     record HideText(int tick, String ref) implements CutsceneAction {}
     record ShowHead(int tick, String ref, UUID headUuid, MenuTransform transform, int width, int height) implements CutsceneAction {}
     record HideHead(int tick, String ref) implements CutsceneAction {}
