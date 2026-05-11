@@ -50,6 +50,13 @@ public interface IEnvironmentManager {
     void setTrueDarkness(Player player, boolean enabled);
 
     /**
+     * Enables or disables dynamic lighting on the player's client. When enabled,
+     * entities holding light-emitting items (torches, lanterns, glowstone, etc.)
+     * cast block-light onto nearby surfaces.
+     */
+    void setDynamicLighting(Player player, boolean enabled);
+
+    /**
      * Enables dense fog rendering on the player's client.
      *
      * @param player the target player
@@ -63,4 +70,12 @@ public interface IEnvironmentManager {
      * Disables dense fog rendering on the player's client.
      */
     void stopDenseFog(Player player);
+
+    /**
+     * Forces fullbright (night vision without UI overlay) on or off for the player.
+     *
+     * @param player the target player
+     * @param enabled true to enable fullbright, false to disable
+     */
+    void setFullbright(Player player, boolean enabled);
 }

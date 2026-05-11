@@ -103,10 +103,11 @@ public interface IHUDManager {
      * @param layer the render layer (z-index)
      * @param width the render width
      * @param height the render height
+     * @param alpha the opacity (0.0 to 1.0)
      * @param horizontalAlignment horizontal alignment
      * @param verticalAlignment vertical alignment
      */
-    void renderPlayer(Player player, String reference, String identifier, float x, float y, int layer, float width, float height, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment);
+    void renderPlayer(Player player, String reference, String identifier, float x, float y, int layer, float width, float height, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment);
 
     /**
      * Removes a rendered player bust from the player's HUD.

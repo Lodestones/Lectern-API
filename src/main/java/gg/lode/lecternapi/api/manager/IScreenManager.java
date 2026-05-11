@@ -91,6 +91,19 @@ public interface IScreenManager {
     void stopMotionBlur(Player player);
 
     /**
+     * Limits the player's frame rate to the specified value.
+     *
+     * @param player the target player
+     * @param fpsLimit the max FPS (e.g. 15, 30)
+     */
+    void startFpsCooker(Player player, float fpsLimit);
+
+    /**
+     * Restores the player's original frame rate.
+     */
+    void stopFpsCooker(Player player);
+
+    /**
      * Enables or disables the outline shader (motion sense) effect.
      */
     void setOutlineShader(Player player, boolean enabled);
@@ -367,9 +380,38 @@ public interface IScreenManager {
     void playTotemScreen(Player player, String itemId);
 
     /**
+     * Plays the totem screen animation with a custom item model from a resource pack.
+     *
+     * @param player    the target player
+     * @param itemId    the base item identifier (e.g. "minecraft:totem_of_undying")
+     * @param itemModel the custom item model identifier from a resource pack
+     *                  (e.g. "mypack:custom_totem"), or null/empty for the default model
+     */
+    void playTotemScreen(Player player, String itemId, String itemModel);
+
+    /**
+     * Plays the totem screen animation using a Bukkit ItemStack.
+     * Extracts the item type and custom item model (if set) from the stack.
+     *
+     * @param player the target player
+     * @param item   the item to display in the totem animation
+     */
+    void playTotemScreen(Player player, org.bukkit.inventory.ItemStack item);
+
+    /**
      * Plays the default totem of undying screen animation on the player's client.
      *
      * @param player the target player
      */
     void playTotemScreen(Player player);
+
+    /**
+     * Opens a URL confirmation dialog on the player's client, identical to clicking
+     * a link in chat. The player will be shown the URL and asked to confirm before
+     * their browser opens it.
+     *
+     * @param player the target player
+     * @param url    the URL to open (e.g. "https://example.com")
+     */
+    void openLink(Player player, String url);
 }

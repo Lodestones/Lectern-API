@@ -43,4 +43,6 @@ public interface ILecternAPI {
     IFlareManager getFlareManager();
 
     IAuraManager getAuraManager();
+
+    IUIManager getUIManager();
 }

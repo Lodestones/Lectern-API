@@ -72,4 +72,13 @@ public interface ICameraManager {
      * body rotation follows the camera direction.
      */
     void setBodyFollowCam(Player player, boolean enabled);
+
+    /**
+     * Forces zoom on or off for the player. When forced on, the client behaves
+     * as if the zoom keybind is held until forced off.
+     *
+     * @param player the target player
+     * @param enabled true to force zoom on, false to release
+     */
+    void setZoom(Player player, boolean enabled);
 }
