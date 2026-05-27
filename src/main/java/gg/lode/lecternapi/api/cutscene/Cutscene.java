@@ -75,7 +75,11 @@ public final class Cutscene {
         }
 
         public Builder showText(String ref, String text, MenuTransform transform, float scale) {
-            actions.add(new CutsceneAction.ShowText(cursor, ref, text, transform, scale));
+            return showText(ref, text, transform, scale, "auto");
+        }
+
+        public Builder showText(String ref, String text, MenuTransform transform, float scale, String textAlign) {
+            actions.add(new CutsceneAction.ShowText(cursor, ref, text, transform, scale, textAlign));
             return this;
         }
 

@@ -39,4 +39,16 @@ public interface ILecternAPI {
     ICutsceneManager getCutsceneManager();
 
     IPingManager getPingManager();
+
+    IFlareManager getFlareManager();
+
+    IAuraManager getAuraManager();
+
+    IUIManager getUIManager();
+
+    IImpactFrameManager getImpactFrameManager();
+
+    IExplosionManager getExplosionManager();
+
+    ISkyboxManager getSkyboxManager();
 }
