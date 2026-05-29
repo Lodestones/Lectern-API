@@ -23,12 +23,23 @@ public interface IUIManager {
 
     /**
      * Displays a simple info toast with the given title and message.
+     * Uses {@code title} as the toast id, which means resending will update
+     * in place instead of re-popping.
      *
      * @param player  the target player
-     * @param title   the toast title
+     * @param title   the toast title (also used as the toast id)
      * @param message the toast message
      */
     void showToast(Player player, String title, String message);
+
+    /**
+     * Removes an active toast by id. Triggers the pop-out animation if the
+     * toast is currently live; no-op otherwise.
+     *
+     * @param player the target player
+     * @param id     the id of the toast to remove
+     */
+    void removeToast(Player player, String id);
 
     // ── Scrollable Text Screen ────────────────────────────────
 

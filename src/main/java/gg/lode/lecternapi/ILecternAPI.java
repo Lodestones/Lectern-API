@@ -45,4 +45,10 @@ public interface ILecternAPI {
     IAuraManager getAuraManager();
 
     IUIManager getUIManager();
+
+    IImpactFrameManager getImpactFrameManager();
+
+    IExplosionManager getExplosionManager();
+
+    ISkyboxManager getSkyboxManager();
 }
