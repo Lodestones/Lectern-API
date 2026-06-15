@@ -100,4 +100,24 @@ public interface IInputManager {
      * @param player the target player
      */
     void clearKeybinds(Player player);
+
+    /**
+     * Disables or enables 1.21.11 spear usage (lunge + attack) on the player's
+     * client. When disabled, any item in the {@code #minecraft:spears} tag cannot
+     * be lunged or used until re-enabled. Tracked, so it survives a reconnect.
+     *
+     * @param player   the target player
+     * @param disabled true to block spear usage, false to restore it
+     */
+    void setDisableSpearUsage(Player player, boolean disabled);
+
+    /**
+     * Disables or enables the end-gateway light beam render on the player's
+     * client. When disabled, end gateway blocks no longer render their vertical
+     * beam. Tracked, so it survives a reconnect.
+     *
+     * @param player   the target player
+     * @param disabled true to hide the end-gateway beam, false to restore it
+     */
+    void setDisableEndBeam(Player player, boolean disabled);
 }

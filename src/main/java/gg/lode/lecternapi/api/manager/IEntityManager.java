@@ -231,4 +231,39 @@ public interface IEntityManager {
      * @param enabled true to enable chain rendering, false to disable
      */
     void setVisualChain(Player player, boolean enabled);
+
+    // --- Disintegration ---
+
+    /**
+     * Disintegrates a player entity on the target player's client (Thanos-snap
+     * style): the entity's pose freezes, the model turns into skin-pixel voxels,
+     * and the voxels dissolve into wind-blown dust. The entity stays hidden on
+     * the client after the dissolve until {@link #stopDisintegrate} is sent.
+     * <p>
+     * The effect is purely visual — pair it with a server-side freeze so the
+     * frozen statue doesn't move with the live entity.
+     *
+     * @param player the player who will see the effect
+     * @param entityUuid the UUID of the player entity to disintegrate
+     * @param durationMs dissolve duration in milliseconds ({@code <= 0} = default 4000)
+     * @param holdMs frozen-statue beat before the dissolve starts ({@code <= 0} = none)
+     * @param sweepUp true to dissolve feet-first upward, false head-first downward
+     */
+    void disintegrate(Player player, UUID entityUuid, int durationMs, int holdMs, boolean sweepUp);
+
+    /**
+     * Disintegrates a player entity with the default feet-first upward sweep.
+     */
+    void disintegrate(Player player, UUID entityUuid, int durationMs, int holdMs);
+
+    /**
+     * Disintegrates a player entity with default timing (4s dissolve, 600ms hold).
+     */
+    void disintegrate(Player player, UUID entityUuid);
+
+    /**
+     * Cancels a disintegration (or unhides the entity after one finished) on
+     * the target player's client.
+     */
+    void stopDisintegrate(Player player, UUID entityUuid);
 }
