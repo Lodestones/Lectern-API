@@ -63,6 +63,22 @@ public interface IEntityManager {
     void setSkinToUuid(Player player, UUID entityUuid, UUID skinUuid);
 
     /**
+     * Overrides the skin of an entity using a raw Mojang texture property
+     * (the base64 {@code value} and its {@code signature}), the standard skin
+     * format used by GameProfile properties. The client decodes the value to
+     * resolve the skin URL and model (slim/wide) and downloads the texture.
+     * <p>
+     * Use this when you already hold the texture property (e.g. from a cached
+     * profile) and want to avoid a Mojang API lookup by name/UUID.
+     *
+     * @param player the player who will see the skin
+     * @param entityUuid the UUID of the entity to reskin
+     * @param textureValue the base64-encoded textures property value
+     * @param textureSignature the property signature (may be null/empty; used for authenticity, not required to render)
+     */
+    void setSkinToTexture(Player player, UUID entityUuid, String textureValue, String textureSignature);
+
+    /**
      * Removes a skin override from an entity as seen by the target player.
      */
     void removeSkin(Player player, UUID entityUuid);
