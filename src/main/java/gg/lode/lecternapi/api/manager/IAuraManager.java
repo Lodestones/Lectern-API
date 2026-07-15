@@ -49,6 +49,56 @@ public interface IAuraManager {
      */
     void clearChroniteAuras(Player viewer);
 
+    // --- Chronite Aura Swirl (double-helix travelling between two points) ---
+
+    /**
+     * Plays a chronite swirl: two line strands spiral (double helix) along the axis from an
+     * initial world position to a target world position, extending toward the target over the
+     * given duration, then fading out.
+     *
+     * @param player          the player whose client will render the effect
+     * @param id              a unique identifier for this swirl (used to stop it)
+     * @param x1              initial x coordinate
+     * @param y1              initial y coordinate
+     * @param z1              initial z coordinate
+     * @param x2              target x coordinate
+     * @param y2              target y coordinate
+     * @param z2              target z coordinate
+     * @param red             red color component (0-255)
+     * @param green           green color component (0-255)
+     * @param blue            blue color component (0-255)
+     * @param durationSeconds time for the swirl to travel from the initial to the target position
+     * @param radius          radius of the helix around the travel axis, in blocks
+     * @param thickness       width of each strand ribbon, in blocks
+     * @param coilLength      length of the coil in blocks; 0 (or larger than the path) fills the
+     *                        whole travelled path, a smaller value trails a fixed-length coil behind the tip
+     */
+    default void playChroniteSwirl(Player player, String id, float x1, float y1, float z1,
+                           float x2, float y2, float z2,
+                           int red, int green, int blue, float durationSeconds, float radius,
+                           float thickness, float coilLength) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Stops a chronite swirl by its identifier.
+     *
+     * @param player the target player
+     * @param id     the swirl identifier
+     */
+    default void stopChroniteSwirl(Player player, String id) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Clears all chronite swirl effects on the target player's client.
+     *
+     * @param player the target player
+     */
+    default void clearChroniteSwirls(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
     // --- Shockwave Aura (expanding ring) ---
 
     /**

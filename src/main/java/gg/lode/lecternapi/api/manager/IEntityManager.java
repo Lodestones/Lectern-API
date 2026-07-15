@@ -76,7 +76,9 @@ public interface IEntityManager {
      * @param textureValue the base64-encoded textures property value
      * @param textureSignature the property signature (may be null/empty; used for authenticity, not required to render)
      */
-    void setSkinToTexture(Player player, UUID entityUuid, String textureValue, String textureSignature);
+    default void setSkinToTexture(Player player, UUID entityUuid, String textureValue, String textureSignature) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 
     /**
      * Removes a skin override from an entity as seen by the target player.
@@ -266,6 +268,18 @@ public interface IEntityManager {
      * @param sweepUp true to dissolve feet-first upward, false head-first downward
      */
     void disintegrate(Player player, UUID entityUuid, int durationMs, int holdMs, boolean sweepUp);
+
+    /**
+     * Disintegrates a player entity, optionally in reverse.
+     *
+     * @param inverted true to play the dissolve in reverse — the voxels start fully
+     *                 dispersed and reassemble back into the player, then the real
+     *                 player takes over rendering
+     */
+    default void disintegrate(Player player, UUID entityUuid, int durationMs, int holdMs, boolean sweepUp, boolean inverted) {
+        // Backward-compatible fallback: older implementations play the normal (non-inverted) dissolve.
+        disintegrate(player, entityUuid, durationMs, holdMs, sweepUp);
+    }
 
     /**
      * Disintegrates a player entity with the default feet-first upward sweep.
