@@ -51,4 +51,6 @@ public interface ILecternAPI {
     IExplosionManager getExplosionManager();
 
     ISkyboxManager getSkyboxManager();
+
+    IParticleManager getParticleManager();
 }

@@ -208,6 +208,17 @@ public interface IHUDManager {
     void renderText(Player player, String reference, String text, float x, float y, int layer, float scale, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, TextAlignment textAlignment);
 
     /**
+     * Renders text on the player's HUD with a uniform opacity applied to the whole element.
+     *
+     * @param alpha element opacity, {@code 0.0} (transparent) to {@code 1.0} (opaque)
+     * @see #renderText(Player, String, String, float, float, int, float, HorizontalAlignment, VerticalAlignment, TextAlignment)
+     */
+    default void renderText(Player player, String reference, String text, float x, float y, int layer, float scale, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, TextAlignment textAlignment) {
+        // Backwards-compatible fallback: older implementations render fully opaque.
+        renderText(player, reference, text, x, y, layer, scale, horizontalAlignment, verticalAlignment, textAlignment);
+    }
+
+    /**
      * Renders a Kyori Adventure Component on the player's HUD.
      * The component is serialized to JSON for the client to parse.
      *
@@ -223,6 +234,17 @@ public interface IHUDManager {
      * @param textAlignment text alignment within the element
      */
     void renderText(Player player, String reference, Component component, float x, float y, int layer, float scale, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, TextAlignment textAlignment);
+
+    /**
+     * Renders a Component on the player's HUD with a uniform opacity applied to the whole element.
+     *
+     * @param alpha element opacity, {@code 0.0} (transparent) to {@code 1.0} (opaque)
+     * @see #renderText(Player, String, Component, float, float, int, float, HorizontalAlignment, VerticalAlignment, TextAlignment)
+     */
+    default void renderText(Player player, String reference, Component component, float x, float y, int layer, float scale, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, TextAlignment textAlignment) {
+        // Backwards-compatible fallback: older implementations render fully opaque.
+        renderText(player, reference, component, x, y, layer, scale, horizontalAlignment, verticalAlignment, textAlignment);
+    }
 
     /**
      * Removes rendered text from the player's HUD.
