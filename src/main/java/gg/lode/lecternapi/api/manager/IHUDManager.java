@@ -1,7 +1,10 @@
 package gg.lode.lecternapi.api.manager;
 
 import net.kyori.adventure.text.Component;
+import gg.lode.lecternapi.api.hud.HudElement;
 import org.bukkit.entity.Player;
+
+import java.util.Set;
 
 /**
  * Manages HUD rendering effects for players running the Lectern client mod.
@@ -277,4 +280,44 @@ public interface IHUDManager {
      * @param player the target player
      */
     void clearItemCooldowns(Player player);
+
+    // --- Individual HUD elements ---
+
+    /**
+     * Hides the given HUD elements on the player's client and shows every other one.
+     * <p>
+     * Full state, not a delta — pass the complete set each time and the client matches it, so
+     * there's nothing to track server-side. An empty set shows everything.
+     * <p>
+     * Each element is suppressed at its own draw call, so the rest of the HUD keeps drawing
+     * and nothing reflows. Note that vanilla positions the status bars relative to one
+     * another: hiding hunger won't move hearts, and hiding hearts leaves the gap where they
+     * were rather than sliding the rest down.
+     *
+     * @param player the target player
+     * @param elements the elements to hide
+     */
+    default void setHiddenHudElements(Player player, Set<HudElement> elements) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Hides or shows a single HUD element, leaving the others as they are.
+     *
+     * @param player the target player
+     * @param element the element to change
+     * @param hidden true to hide it, false to show it
+     */
+    default void setHudElementHidden(Player player, HudElement element, boolean hidden) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Shows every HUD element again.
+     *
+     * @param player the target player
+     */
+    default void clearHiddenHudElements(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }

@@ -326,6 +326,19 @@ public interface IEntityManager {
      * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
      */
     default void setVerityModel(Player player, UUID entityUuid, VerityModel model, VerityFace face, VerityFit fit, float scale, int hue) {
+        setVerityModel(player, entityUuid, model, face, fit, scale, hue, true);
+    }
+
+    /**
+     * Applies the Verity model, optionally without its drop-in intro.
+     *
+     * @param playIntro whether the ball drops in and settles when it first appears. Pass
+     *                  false to have it simply be there — for a model applied out of sight,
+     *                  or mid-scene where a ball dropping from above would give it away.
+     *                  Has no effect when the entity already wears the model, since
+     *                  re-applying never replays the intro.
+     */
+    default void setVerityModel(Player player, UUID entityUuid, VerityModel model, VerityFace face, VerityFit fit, float scale, int hue, boolean playIntro) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 
