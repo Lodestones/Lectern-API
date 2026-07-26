@@ -55,4 +55,6 @@ public interface ILecternAPI {
     ISkyboxManager getSkyboxManager();
 
     IParticleManager getParticleManager();
+
+    IShapeshiftManager getShapeshiftManager();
 }
