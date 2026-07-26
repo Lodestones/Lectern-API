@@ -3,6 +3,8 @@ package gg.lode.lecternapi.api.manager;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.UUID;
+
 /**
  * Manages camera effects for players running the Lectern client mod.
  * Controls camera position, rotation, field of view, screen shake, and perspective.
@@ -110,6 +112,53 @@ public interface ICameraManager {
      *                               looking past vertical is a normal way to move
      */
     default void setUnlockedCamera(Player player, boolean enabled, boolean invertMouse, boolean invertMovement, boolean invertMovementSwimming) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Puts the viewer's camera behind Verity's face while it's being carried — the held
+     * ball's point of view, looking back up at whoever picked it up.
+     * <p>
+     * Engages by itself once the holder has a Verity-tagged item in their main hand, and
+     * releases when they put it away, so it can be armed ahead of the moment it's needed.
+     *
+     * @param player the player whose camera is taken over
+     * @param holder whose hand the camera rides in; null for the viewer's own hand
+     */
+    default void setVerityCam(Player player, UUID holder) {
+        setVerityCam(player, holder, false, true, true, 0.45f, 0.32f, -0.28f, 0.0f, 0.0f);
+    }
+
+    /**
+     * Puts the viewer's camera behind Verity's face, with full control over where the ball
+     * sits and where it aims.
+     * <p>
+     * The viewer and the holder are independent — the camera is placed entirely on the
+     * viewing client, so one player can be put behind the ball in another player's hand.
+     * <p>
+     * Hand offsets are relative to the holder's eyes and rotate with them: {@code forward}
+     * out along their look, {@code side} to their right (negated for the off hand),
+     * {@code up} vertically. The defaults approximate where a held item renders; raise
+     * {@code forward} to pull the camera away from the holder's face.
+     *
+     * @param player the player whose camera is taken over
+     * @param holder whose hand the camera rides in; null for the viewer's own hand
+     * @param offHand ride the off hand instead of the main hand
+     * @param requireHeldItem only engage while the holder actually has a Verity-tagged item
+     * @param lookAtHolder aim back at the holder's face; false aims out along their look direction
+     * @param yawOffset degrees added to the resulting aim
+     * @param pitchOffset degrees added to the resulting aim
+     */
+    default void setVerityCam(Player player, UUID holder, boolean offHand, boolean requireHeldItem,
+                              boolean lookAtHolder, float forward, float side, float up,
+                              float yawOffset, float pitchOffset) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Returns the viewer's camera to normal.
+     */
+    default void stopVerityCam(Player player) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 }
