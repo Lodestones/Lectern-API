@@ -59,4 +59,6 @@ public interface ILecternAPI {
     IShapeshiftManager getShapeshiftManager();
 
     ISharedControlManager getSharedControlManager();
+
+    INicknameManager getNicknameManager();
 }
