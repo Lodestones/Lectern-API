@@ -414,4 +414,18 @@ public interface IScreenManager {
      * @param url    the URL to open (e.g. "https://example.com")
      */
     void openLink(Player player, String url);
+
+    /**
+     * Hides the player's own first-person main hand and/or off hand (arm and
+     * held item). Purely visual: the items stay equipped and usable, and
+     * third-person rendering is untouched. Pass false for both to show
+     * everything again.
+     *
+     * @param player   the target player
+     * @param mainHand true to hide the main hand
+     * @param offHand  true to hide the off hand
+     */
+    default void setHiddenHands(Player player, boolean mainHand, boolean offHand) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }
