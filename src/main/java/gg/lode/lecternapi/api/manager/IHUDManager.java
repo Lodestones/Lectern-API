@@ -1,6 +1,7 @@
 package gg.lode.lecternapi.api.manager;
 
 import net.kyori.adventure.text.Component;
+import gg.lode.lecternapi.api.hud.HudEasing;
 import gg.lode.lecternapi.api.hud.HudElement;
 import org.bukkit.entity.Player;
 
@@ -318,6 +319,83 @@ public interface IHUDManager {
      * @param player the target player
      */
     default void clearHiddenHudElements(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    // --- Fades ---
+    // All fade times are milliseconds. Zeros behave exactly like the fade-less overloads:
+    // instant show, instant removal, unlimited lifetime.
+
+    /**
+     * Renders a texture with a fade envelope: fade-in on show, optional auto-expiring
+     * lifetime with fade-out before expiry, and a graceful fade-out on removal.
+     *
+     * @param fadeInMillis fade-in length, 0 for instant
+     * @param fadeOutMillis fade-out length (used both before expiry and on removal), 0 for instant
+     * @param durationMillis lifetime before the element removes itself, 0 to keep until removed
+     */
+    default void renderTexture(Player player, String reference, String textureId, float x, float y, int layer, float width, float height, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, long fadeInMillis, long fadeOutMillis, long durationMillis) {
+        renderTexture(player, reference, textureId, x, y, layer, width, height, alpha, horizontalAlignment, verticalAlignment);
+    }
+
+    /**
+     * Renders a player head with opacity and a fade envelope.
+     *
+     * @see #renderTexture(Player, String, String, float, float, int, float, float, float, HorizontalAlignment, VerticalAlignment, long, long, long)
+     */
+    default void renderHead(Player player, String reference, String headUuid, float x, float y, int layer, float width, float height, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, long fadeInMillis, long fadeOutMillis, long durationMillis) {
+        renderHead(player, reference, headUuid, x, y, layer, width, height, horizontalAlignment, verticalAlignment);
+    }
+
+    /**
+     * Renders text with a fade envelope.
+     *
+     * @see #renderTexture(Player, String, String, float, float, int, float, float, float, HorizontalAlignment, VerticalAlignment, long, long, long)
+     */
+    default void renderText(Player player, String reference, String text, float x, float y, int layer, float scale, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, TextAlignment textAlignment, long fadeInMillis, long fadeOutMillis, long durationMillis) {
+        renderText(player, reference, text, x, y, layer, scale, alpha, horizontalAlignment, verticalAlignment, textAlignment);
+    }
+
+    /**
+     * Renders a Component with a fade envelope.
+     *
+     * @see #renderTexture(Player, String, String, float, float, int, float, float, float, HorizontalAlignment, VerticalAlignment, long, long, long)
+     */
+    default void renderText(Player player, String reference, Component component, float x, float y, int layer, float scale, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, TextAlignment textAlignment, long fadeInMillis, long fadeOutMillis, long durationMillis) {
+        renderText(player, reference, component, x, y, layer, scale, alpha, horizontalAlignment, verticalAlignment, textAlignment);
+    }
+
+    /**
+     * Renders a player bust with a fade envelope.
+     *
+     * @see #renderTexture(Player, String, String, float, float, int, float, float, float, HorizontalAlignment, VerticalAlignment, long, long, long)
+     */
+    default void renderPlayer(Player player, String reference, String identifier, float x, float y, int layer, float width, float height, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, long fadeInMillis, long fadeOutMillis, long durationMillis) {
+        renderPlayer(player, reference, identifier, x, y, layer, width, height, alpha, horizontalAlignment, verticalAlignment);
+    }
+
+    // --- Move animations ---
+    // Glide an already-rendered element to a new position (same coordinate space and
+    // alignment as it was rendered with). Zero duration snaps instantly. Retargeting
+    // mid-move starts from the currently rendered position. No-ops on old clients.
+
+    /** Glides a texture element to a new position. */
+    default void moveTexture(Player player, String reference, float toX, float toY, long durationMillis, HudEasing easing) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Glides a head element to a new position. */
+    default void moveHead(Player player, String reference, float toX, float toY, long durationMillis, HudEasing easing) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Glides a text element to a new position. */
+    default void moveText(Player player, String reference, float toX, float toY, long durationMillis, HudEasing easing) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Glides a player bust element to a new position. */
+    default void movePlayer(Player player, String reference, float toX, float toY, long durationMillis, HudEasing easing) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 }
