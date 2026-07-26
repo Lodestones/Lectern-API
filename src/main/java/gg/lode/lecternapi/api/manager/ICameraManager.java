@@ -81,4 +81,35 @@ public interface ICameraManager {
      * @param enabled true to force zoom on, false to release
      */
     void setZoom(Player player, boolean enabled);
+
+    /**
+     * Removes the &plusmn;90&deg; pitch clamp on the player's camera, letting it keep
+     * rotating past straight up or straight down and come out upside down behind them.
+     * <p>
+     * Uses the sensible defaults for the compensations: inverted mouse look while upside
+     * down, normal walk direction, inverted walk direction while swimming.
+     *
+     * @param enabled whether the pitch clamp is lifted
+     */
+    default void setUnlockedCamera(Player player, boolean enabled) {
+        setUnlockedCamera(player, enabled, true, false, true);
+    }
+
+    /**
+     * Removes the &plusmn;90&deg; pitch clamp on the player's camera, with control over the
+     * compensations applied once the view passes vertical.
+     * <p>
+     * Past vertical the camera faces opposite the player's yaw, so mouse look, walk
+     * direction and the sprint-jump impulse all read as mirrored. Each switch below undoes
+     * that for one of them; turn them off if you want the raw, disorienting behaviour.
+     *
+     * @param enabled whether the pitch clamp is lifted
+     * @param invertMouse flip horizontal look while upside down, so dragging right still turns right
+     * @param invertMovement flip walk direction while upside down
+     * @param invertMovementSwimming flip walk direction while upside down and swimming, where
+     *                               looking past vertical is a normal way to move
+     */
+    default void setUnlockedCamera(Player player, boolean enabled, boolean invertMouse, boolean invertMovement, boolean invertMovementSwimming) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }

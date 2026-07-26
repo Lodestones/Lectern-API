@@ -1,12 +1,16 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.verity.VerityFace;
+import gg.lode.lecternapi.api.verity.VerityFit;
+import gg.lode.lecternapi.api.verity.VerityModel;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 /**
  * Manages entity-related effects for players running the Lectern client mod.
- * Controls custom capes, skins, nametags, entity tinting, visibility, emotes, and model attachments.
+ * Controls custom capes, skins, nametags, entity tinting, visibility, emotes, model attachments,
+ * disintegration, and the Verity model replacement.
  */
 public interface IEntityManager {
 
@@ -296,4 +300,139 @@ public interface IEntityManager {
      * the target player's client.
      */
     void stopDisintegrate(Player player, UUID entityUuid);
+
+    // --- Verity Model ---
+
+    /**
+     * Replaces an entity's rendering with the Verity model on the target player's client:
+     * a face-textured sphere (or the cardboard box it ships in) drawn in place of the
+     * entity's own model.
+     * <p>
+     * The effect is purely visual — the entity keeps its real model server-side and its
+     * hitbox, movement and AI are untouched. The client drives the animation off the
+     * entity's own motion: the ball rolls as it travels and unwinds when it stops, squashes
+     * on landing, and turns to face wherever the entity is looking. It is also kept out of
+     * block geometry so it doesn't sink through floors or clip into walls.
+     * <p>
+     * Re-applying to an entity that already wears the model retunes it in place rather than
+     * restarting it, so the drop-in intro doesn't replay.
+     *
+     * @param player the player who will see the model
+     * @param entityUuid the UUID of the entity to replace
+     * @param model which model to wear
+     * @param face the face state to start on
+     * @param fit how the ball is sized against the entity's hitbox
+     * @param scale multiplier on the size the fit produces; {@code <= 0} falls back to 1
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityModel(Player player, UUID entityUuid, VerityModel model, VerityFace face, VerityFit fit, float scale, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Applies the Verity ball with default sizing (hitbox width), no tint and a happy face.
+     */
+    default void setVerityModel(Player player, UUID entityUuid, VerityFace face) {
+        setVerityModel(player, entityUuid, VerityModel.BALL, face, VerityFit.DEFAULT, 1.0f, 0);
+    }
+
+    /**
+     * Removes the Verity model from an entity, restoring its normal rendering.
+     */
+    default void removeVerityModel(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Clears every Verity model on the target player's client.
+     */
+    default void clearVerityModels(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Switches which model an entity wears without restarting its animation state.
+     */
+    default void setVerityModelType(Player player, UUID entityUuid, VerityModel model) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Changes the face an entity's ball is wearing.
+     */
+    default void setVerityFace(Player player, UUID entityUuid, VerityFace face) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Changes how the ball is sized against the entity's hitbox.
+     */
+    default void setVerityFit(Player player, UUID entityUuid, VerityFit fit) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Flags the ball as talking, which swaps in the current face's talking texture and
+     * starts a continuous squash/stretch pulse. Stays on until switched back off.
+     */
+    default void setVerityTalking(Player player, UUID entityUuid, boolean talking) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Rescales the ball. Multiplies whatever size the current fit produces.
+     *
+     * @param scale size multiplier; values {@code <= 0} are ignored
+     */
+    default void setVerityScale(Player player, UUID entityUuid, float scale) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Tints the ball.
+     *
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue
+     */
+    default void setVerityHue(Player player, UUID entityUuid, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Toggles the collision constraint that keeps the ball out of block geometry.
+     * On by default; turn it off if you want the ball to pass through the world.
+     */
+    default void setVerityPhysics(Player player, UUID entityUuid, boolean physics) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Replays the ball's drop-and-settle intro.
+     */
+    default void playVerityBounce(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Plays the box's lid-open animation: the flaps swing apart and the box launches
+     * upward and shrinks away. No-op unless the entity is wearing {@link VerityModel#BOX}.
+     */
+    default void playVerityBoxOpen(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Controls whether items tagged for the Verity model render as the ball on this
+     * player's client, and what tint they get.
+     * <p>
+     * An item opts in through its custom data — {@code {"lodestone:verity":"<face>"}} —
+     * and then renders as a ball in hand, in third person, on the ground and in the
+     * inventory. This toggle is a client-wide override for that behaviour; it is on by
+     * default, since the tag itself is already opt-in.
+     *
+     * @param enabled whether tagged items render as the ball
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityItemModels(Player player, boolean enabled, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }
