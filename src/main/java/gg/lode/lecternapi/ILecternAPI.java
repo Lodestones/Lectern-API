@@ -57,4 +57,6 @@ public interface ILecternAPI {
     IParticleManager getParticleManager();
 
     IShapeshiftManager getShapeshiftManager();
+
+    ISharedControlManager getSharedControlManager();
 }
