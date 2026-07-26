@@ -18,6 +18,8 @@ public interface ILecternAPI {
 
     IHUDManager getHUDManager();
 
+    IHiddenOverlayManager getHiddenOverlayManager();
+
     IAudioManager getAudioManager();
 
     IEnvironmentManager getEnvironmentManager();
