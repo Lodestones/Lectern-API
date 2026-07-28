@@ -1,8 +1,10 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.verity.VerityClip;
 import gg.lode.lecternapi.api.verity.VerityFace;
 import gg.lode.lecternapi.api.verity.VerityFit;
 import gg.lode.lecternapi.api.verity.VerityModel;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -10,7 +12,8 @@ import java.util.UUID;
 /**
  * Manages entity-related effects for players running the Lectern client mod.
  * Controls custom capes, skins, nametags, entity tinting, visibility, emotes, model attachments,
- * disintegration, and the Verity model replacement.
+ * disintegration, the Verity model replacement, the Verity monster costume, and player
+ * ragdolls.
  */
 public interface IEntityManager {
 
@@ -446,6 +449,186 @@ public interface IEntityManager {
      * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
      */
     default void setVerityItemModels(Player player, boolean enabled, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+    // --- Verity Monster ---
+
+    /**
+     * Replaces an entity's rendering with the Verity monster on the target player's client —
+     * a fully animated character model drawn in place of the entity's own.
+     * <p>
+     * Purely visual, like the ball: the entity keeps its real model server-side and its AI and
+     * movement are untouched. The client animates it from the entity's own motion, cross-fading
+     * idle, walk and run by speed and driving the stride from ground covered rather than from
+     * the clock, so it stays in step at any size or movement speed. Its hitbox and eye height
+     * follow the costume client-side, so a three-block monster sees and collides like one.
+     *
+     * @param player the player who will see the monster
+     * @param entityUuid the UUID of the entity to replace
+     * @param height the model's height in blocks; {@code <= 0} falls back to 2
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityMonster(Player player, UUID entityUuid, float height, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Applies the Verity monster at two blocks tall with no tint. */
+    default void setVerityMonster(Player player, UUID entityUuid) {
+        setVerityMonster(player, entityUuid, 2.0f, 0);
+    }
+
+    /** Removes the Verity monster from an entity, restoring its normal rendering. */
+    default void removeVerityMonster(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Clears every Verity monster on the target player's client. */
+    default void clearVerityMonsters(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Resizes a monster already being rendered.
+     *
+     * @param height the model's height in blocks; the hitbox and eye height follow it
+     */
+    default void setVerityMonsterHeight(Player player, UUID entityUuid, float height) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Tints a monster already being rendered.
+     *
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityMonsterHue(Player player, UUID entityUuid, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Switches the monster between standing and crawling.
+     * <p>
+     * Crawling swaps the whole locomotion set, not just the pose: it idles and moves on all
+     * fours, and its hitbox and eye height drop to match — the crawl is barely a third as tall
+     * as the stance and correspondingly wider.
+     */
+    default void setVerityMonsterCrawling(Player player, UUID entityUuid, boolean crawling) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Whether a player wearing the monster sees their own model in first person.
+     * <p>
+     * With this on the camera rides the model's head, so the view moves with the animation
+     * rather than floating while the head swings around it, and the head geometry is dropped
+     * so the wearer isn't looking at the inside of its own face.
+     *
+     * @param entityUuid the costumed entity; only meaningful for the viewing player themselves
+     */
+    default void setVerityMonsterFirstPerson(Player player, UUID entityUuid, boolean visible) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Plays a clip once over the top of the monster's locomotion, which resumes when it ends.
+     *
+     * @param clip the animation to play
+     */
+    default void playVerityMonsterClip(Player player, UUID entityUuid, VerityClip clip) {
+        playVerityMonsterClip(player, entityUuid, clip, null);
+    }
+
+    /**
+     * Plays a clip once, optionally handing that clip's own camera to a chosen player.
+     * <p>
+     * Only {@link VerityClip#JUMPSCARE} carries a camera. Naming a viewer puts that player
+     * behind it for the length of the clip — dropped to the floor in front of the monster,
+     * looking back up at it — and returns control when it ends. Everyone else watches from
+     * wherever they are.
+     *
+     * @param cameraViewer the player whose camera the clip takes over, or null for nobody
+     */
+    default void playVerityMonsterClip(Player player, UUID entityUuid, VerityClip clip, UUID cameraViewer) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Holds a clip indefinitely, overriding the automatic locomotion until released.
+     *
+     * @see #clearVerityMonsterAnimation(Player, UUID)
+     */
+    default void setVerityMonsterAnimation(Player player, UUID entityUuid, VerityClip clip) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Releases a held clip, handing the monster back to automatic locomotion. */
+    default void clearVerityMonsterAnimation(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Renders an entity in the monster's hands until released.
+     * <p>
+     * The held entity is relocated rather than redrawn, so its skin, armour and animation come
+     * along unchanged; its real position and collision are untouched. Grabbing also clears any
+     * corpse left from a previous scare, so the same victim can be caught again.
+     * <p>
+     * A grabbed victim is what makes {@link VerityClip#JUMPSCARE} a kill rather than a
+     * gesture: the bite lands partway through the clip and leaves a corpse behind.
+     *
+     * @param victimUuid the entity to hold
+     */
+    default void verityMonsterGrab(Player player, UUID entityUuid, UUID victimUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Lets go of whoever the monster is holding, without biting them. */
+    default void verityMonsterRelease(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    // --- Player Ragdolls ---
+
+    /**
+     * Drops a simulated corpse on the target player's client, wearing another player's skin.
+     * <p>
+     * The corpse is a <b>prop, not a replacement</b>. The player it is cloned from is left
+     * entirely alone — still rendered, still themselves — so a body can lie at their feet
+     * while they stand over it, several corpses can wear the same skin, and one viewer can be
+     * shown a corpse that nobody else sees.
+     * <p>
+     * It falls under gravity, collides with the world, and is jointed so it folds like a body
+     * rather than through itself. The skin is looked up from the player list, so the player
+     * being cloned need not be loaded, visible, or nearby.
+     * <p>
+     * Verity's bite spawns one of these itself, positioned from where the victim's head was.
+     * This is the direct route, for deaths that have nothing to do with a monster.
+     *
+     * @param player the player who will see the corpse
+     * @param ragdollId the corpse's own handle, used to remove it later. Independent of whose
+     *                  skin it wears, so the same player can be cloned repeatedly
+     * @param skinSource the player whose skin the corpse wears
+     * @param location where the corpse's feet start, and the direction it faces
+     * @param height the corpse's height in blocks; 1.8 matches a normal player
+     * @param beheaded whether it appears without a head — the head is gone rather than
+     *                 detached, so nothing falls
+     */
+    default void spawnPlayerRagdoll(Player player, UUID ragdollId, UUID skinSource, Location location, double height, boolean beheaded) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Drops an intact corpse at player height, wearing {@code skinSource}'s skin. */
+    default void spawnPlayerRagdoll(Player player, UUID ragdollId, UUID skinSource, Location location) {
+        spawnPlayerRagdoll(player, ragdollId, skinSource, location, 1.8, false);
+    }
+
+    /** Removes a corpse by its own id. The player it was cloned from is unaffected. */
+    default void removePlayerRagdoll(Player player, UUID ragdollId) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Clears every corpse on the target player's client. */
+    default void clearPlayerRagdolls(Player player) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 }
