@@ -28,6 +28,9 @@ public interface ILecternAPI {
 
     IInputManager getInputManager();
 
+    /** Raw input reporting for anti-cheat consumers. Off for every player by default. */
+    IInputTelemetryManager getInputTelemetryManager();
+
     IScreenManager getScreenManager();
 
     IPacketMenuManager getPacketMenuManager();
