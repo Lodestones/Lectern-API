@@ -59,6 +59,11 @@ public interface ILecternAPI {
 
     IParticleManager getParticleManager();
 
+    /** Effekseer particle effects — authored {@code .efkefc} VFX played on the client. */
+    default IEffekManager getEffekManager() {
+        return new IEffekManager() {};
+    }
+
     IShapeshiftManager getShapeshiftManager();
 
     ISharedControlManager getSharedControlManager();

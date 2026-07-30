@@ -3,6 +3,7 @@ package gg.lode.lecternapi.api.manager;
 import net.kyori.adventure.text.Component;
 import gg.lode.lecternapi.api.hud.HudEasing;
 import gg.lode.lecternapi.api.hud.HudElement;
+import gg.lode.lecternapi.api.ui.AnnouncementBadge;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -397,5 +398,16 @@ public interface IHUDManager {
     /** Glides a player bust element to a new position. */
     default void movePlayer(Player player, String reference, float toX, float toY, long durationMillis, HudEasing easing) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Shows an announcement badge — the centre-screen trapezoid banner. Showing while one is
+     * already up swaps its contents in place without replaying the opening sweep.
+     */
+    default void showBadge(Player player, AnnouncementBadge badge) {
+    }
+
+    /** Plays the badge's closing sweep. */
+    default void hideBadge(Player player) {
     }
 }

@@ -1,8 +1,10 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.ui.EmoteWheelSlot;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -141,4 +143,30 @@ public interface IEmoteManager {
      * Clears all emote state for a collection of viewers.
      */
     void clearEmotes(Collection<? extends Player> viewers);
+
+    // --- Emote wheel ---
+
+    /**
+     * Replaces the contents of the player's emote wheel: up to 12 slots plus an accent
+     * colour (ARGB, 0 = client default). Contents and visibility are separate so a wheel can
+     * be prepared ahead of time and opened instantly.
+     */
+    default void setEmoteWheel(Player player, List<EmoteWheelSlot> slots, int accentColor) {
+    }
+
+    /**
+     * Opens or closes the wheel. Opening with no slots set is ignored client-side. The
+     * outcome comes back as an {@code EmoteWheelSelectEvent} or {@code EmoteWheelCancelEvent}
+     * — exactly one per opening.
+     */
+    default void showEmoteWheel(Player player, boolean visible) {
+    }
+
+    /** Flips the wheel's visibility. */
+    default void toggleEmoteWheel(Player player) {
+    }
+
+    /** Closes the wheel and forgets its slots. */
+    default void clearEmoteWheel(Player player) {
+    }
 }
