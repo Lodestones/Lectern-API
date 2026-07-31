@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import gg.lode.lecternapi.api.hud.HudEasing;
 import gg.lode.lecternapi.api.hud.HudElement;
 import gg.lode.lecternapi.api.ui.AnnouncementBadge;
+import gg.lode.lecternapi.api.ui.HudAnimation;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -409,5 +410,18 @@ public interface IHUDManager {
 
     /** Plays the badge's closing sweep. */
     default void hideBadge(Player player) {
+    }
+
+    /**
+     * Applies a group animation to every HUD element whose reference starts with
+     * {@code refPrefix} — current and future, so ordering against ADDs doesn't matter.
+     * Component elements are prefixed {@code "<componentId>:"}; prefer the
+     * {@code IPacketComponentManager} overloads for those.
+     */
+    default void animateHudGroup(Player player, String refPrefix, HudAnimation animation) {
+    }
+
+    /** Fades every element with the prefix out over {@code fadeOutMs} and removes them. */
+    default void fadeOutHudGroup(Player player, String refPrefix, int fadeOutMs) {
     }
 }

@@ -69,4 +69,9 @@ public interface ILecternAPI {
     ISharedControlManager getSharedControlManager();
 
     INicknameManager getNicknameManager();
+
+    /** Per-viewer tab-list prefixes, suffixes and sorting. */
+    default ITabListManager getTabListManager() {
+        return new ITabListManager() {};
+    }
 }

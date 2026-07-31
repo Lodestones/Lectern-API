@@ -87,6 +87,15 @@ public interface IInputManager {
     void registerKeybind(Player player, String id, String translationKey, int defaultKey, String category);
 
     /**
+     * Registers a keybind at a position within its category on the controls screen,
+     * starting at index 0. Keys with the same index sort alphabetically; keybinds
+     * registered without an index sit at 0.
+     */
+    default void registerKeybind(Player player, String id, String translationKey, int defaultKey, String category, int sortIndex) {
+        registerKeybind(player, id, translationKey, defaultKey, category);
+    }
+
+    /**
      * Unregisters a custom keybind from the player's client.
      *
      * @param player the target player
