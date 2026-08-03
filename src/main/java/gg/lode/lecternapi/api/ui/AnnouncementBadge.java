@@ -15,6 +15,9 @@ package gg.lode.lecternapi.api.ui;
  *         .description("Deal 25% more damage while airborne")
  *         .icon("minecraft:netherite_sword")
  *         .color(0xFFD9A33C)
+ *         .background(0.05f)
+ *         .backgroundBlur(20f)
+ *         .glow(0xFFD9A33C, 0.35f)
  *         .hold(4000));
  * }</pre>
  */
@@ -32,6 +35,11 @@ public class AnnouncementBadge {
     private float offsetX = 0;
     private float offsetY = 0;
     private float scale = 1;
+    private float backgroundOpacity = 0;
+    private int backgroundColor = 0;
+    private float backgroundBlur = 0;
+    private int glowColor = 0;
+    private float glowIntensity = 0;
 
     /** Headline row. */
     public AnnouncementBadge title(String title) {
@@ -95,6 +103,48 @@ public class AnnouncementBadge {
         return this;
     }
 
+    /**
+     * A backdrop panel behind the banner, echoing its shape a little larger.
+     *
+     * @param opacity 0 for none, 1 for solid. Off by default.
+     */
+    public AnnouncementBadge background(float opacity) {
+        this.backgroundOpacity = opacity;
+        return this;
+    }
+
+    /** The backdrop's colour as RGB. Black unless set; alpha comes from {@link #background(float)}. */
+    public AnnouncementBadge backgroundColor(int rgb) {
+        this.backgroundColor = rgb;
+        return this;
+    }
+
+    /**
+     * Softens the backdrop's edge, in pixels of falloff.
+     * <p>
+     * This is a feathered edge, <b>not</b> a frosted-glass blur of the scene behind — the only
+     * available blur pass is screen-wide and would blur the whole game rather than the strip
+     * behind the banner.
+     *
+     * @param pixels 0 for a hard edge; larger values fade out further
+     */
+    public AnnouncementBadge backgroundBlur(float pixels) {
+        this.backgroundBlur = pixels;
+        return this;
+    }
+
+    /**
+     * A coloured halo behind the trapezoid, echoing its outline outward.
+     *
+     * @param argb      the glow's colour; 0 falls back to the badge's accent colour
+     * @param intensity 0 for none; 1 is a strong halo. Off by default.
+     */
+    public AnnouncementBadge glow(int argb, float intensity) {
+        this.glowColor = argb;
+        this.glowIntensity = intensity;
+        return this;
+    }
+
     public String getTitle() { return title; }
     public String getSubtitle() { return subtitle; }
     public String getDescription() { return description; }
@@ -107,4 +157,9 @@ public class AnnouncementBadge {
     public float getOffsetX() { return offsetX; }
     public float getOffsetY() { return offsetY; }
     public float getScale() { return scale; }
+    public float getBackgroundOpacity() { return backgroundOpacity; }
+    public int getBackgroundColor() { return backgroundColor; }
+    public float getBackgroundBlur() { return backgroundBlur; }
+    public int getGlowColor() { return glowColor; }
+    public float getGlowIntensity() { return glowIntensity; }
 }
