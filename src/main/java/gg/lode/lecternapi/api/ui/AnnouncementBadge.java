@@ -40,6 +40,7 @@ public class AnnouncementBadge {
     private float backgroundBlur = 0;
     private int glowColor = 0;
     private float glowIntensity = 0;
+    private boolean persistent = false;
 
     /** Headline row. */
     public AnnouncementBadge title(String title) {
@@ -84,7 +85,20 @@ public class AnnouncementBadge {
         return this;
     }
 
-    /** How long the badge stays fully open, in milliseconds. */
+    /**
+     * Keeps the badge up until something takes it down, rather than closing after the hold.
+     * <p>
+     * For a badge that states an ongoing condition — a held objective, an active buff, a role —
+     * where a banner that vanished after a few seconds would have to be re-sent to stay on
+     * screen. {@link #hold(int)} is ignored while this is set. Take it down with
+     * {@code hideBadge(player)}, or by showing a non-persistent badge in its place.
+     */
+    public AnnouncementBadge persistent(boolean persistent) {
+        this.persistent = persistent;
+        return this;
+    }
+
+    /** How long the badge stays fully open, in milliseconds. Ignored when {@link #persistent(boolean)}. */
     public AnnouncementBadge hold(int holdMillis) {
         this.hold = holdMillis;
         return this;
@@ -162,4 +176,5 @@ public class AnnouncementBadge {
     public float getBackgroundBlur() { return backgroundBlur; }
     public int getGlowColor() { return glowColor; }
     public float getGlowIntensity() { return glowIntensity; }
+    public boolean isPersistent() { return persistent; }
 }
