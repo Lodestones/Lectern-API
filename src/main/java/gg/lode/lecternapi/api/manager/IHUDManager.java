@@ -5,6 +5,9 @@ import gg.lode.lecternapi.api.hud.HudEasing;
 import gg.lode.lecternapi.api.hud.HudElement;
 import gg.lode.lecternapi.api.ui.AnnouncementBadge;
 import gg.lode.lecternapi.api.ui.HudAnimation;
+import gg.lode.lecternapi.api.ui.HudLayout;
+import gg.lode.lecternapi.api.ui.HudShape;
+import gg.lode.lecternapi.api.ui.WorldAnchor;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -424,4 +427,60 @@ public interface IHUDManager {
     /** Fades every element with the prefix out over {@code fadeOutMs} and removes them. */
     default void fadeOutHudGroup(Player player, String refPrefix, int fadeOutMs) {
     }
+
+    /**
+     * Pins a marker to a point in the world for this player, replacing any anchor with the same
+     * id — which is how a marker on something that moves is kept current.
+     */
+    void setAnchor(Player player, WorldAnchor anchor);
+
+    /**
+     * Unpins a marker. Any groups the anchor was positioning are left on screen: an anchor and
+     * the elements it positions have separate lifetimes, so one can be removed without tearing
+     * down the other.
+     */
+    void removeAnchor(Player player, String id);
+
+    /** Removes every anchor for this player. */
+    void clearAnchors(Player player);
+
+    /**
+     * Draws a solid — rectangle, circle, triangle and the rest. Re-sending the same reference
+     * replaces it, and it groups, fades and moves like any other HUD element.
+     */
+    void renderShape(Player player, HudShape shape);
+
+    /** Removes a shape by reference. */
+    void removeShape(Player player, String reference);
+
+    /**
+     * Glides a shape to a new position over {@code durationMs}, easing as named. Zero snaps.
+     */
+    void moveShape(Player player, String reference, float x, float y, int durationMs, HudEasing easing);
+
+    /**
+     * Plays an editor-authored layout, and pushes any variables it carries.
+     * <p>
+     * A layout with no JSON replays one the client already holds under that id, so a screen
+     * shown repeatedly is sent in full once.
+     */
+    void playLayout(Player player, HudLayout layout);
+
+    /** Takes a layout off screen. */
+    void stopLayout(Player player, String id);
+
+    /** Takes every layout off screen. */
+    void stopLayouts(Player player);
+
+    /**
+     * Sets a single {@code %token%} value without replaying a layout — the update path for a
+     * value that changes while a screen is up.
+     */
+    void setLayoutVariable(Player player, String name, String value);
+
+    /** Sets several at once, which is one packet rather than one per value. */
+    void setLayoutVariables(Player player, java.util.Map<String, String> variables);
+
+    /** Clears every layout variable. */
+    void clearLayoutVariables(Player player);
 }

@@ -41,6 +41,12 @@ public class AnnouncementBadge {
     private int glowColor = 0;
     private float glowIntensity = 0;
     private boolean persistent = false;
+    private int plateColor = 0;
+    private String alignment = "center";
+    private boolean subBadge = false;
+    private int sweepIn = 420;
+    private int sweepOut = 320;
+    private int contentFade = 200;
 
     /** Headline row. */
     public AnnouncementBadge title(String title) {
@@ -61,6 +67,13 @@ public class AnnouncementBadge {
     }
 
     /** Bottom caption row: a label chip and its text (either may be empty). */
+    /**
+     * @deprecated The client no longer draws a caption — the icon moved out of a left-hand
+     *             column and onto a plate above the banner, and the caption went with the
+     *             column. Both strings still travel so the fields after them stay aligned, but
+     *             nothing renders them.
+     */
+    @Deprecated
     public AnnouncementBadge caption(String label, String caption) {
         this.captionLabel = label == null ? "" : label;
         this.caption = caption == null ? "" : caption;
@@ -159,11 +172,81 @@ public class AnnouncementBadge {
         return this;
     }
 
+    /**
+     * ARGB for the plate the icon sits on, above the banner's top edge.
+     * <p>
+     * Its own colour rather than the brackets', so a badge can carry a neutral frame with a
+     * coloured plate, or the reverse. Left at 0 it follows {@link #color(int)}.
+     */
+    public AnnouncementBadge plateColor(int argb) {
+        this.plateColor = argb;
+        return this;
+    }
+
+    /**
+     * Draws the badge as a sub-badge: a slimmer hatched bar instead of the full banner.
+     * <p>
+     * For the secondary line under an announcement — a category, a rarity, a qualifier — where
+     * a second full banner would compete with the first. Same text layout, same timings, same
+     * optional icon; only the shape is quieter.
+     */
+    public AnnouncementBadge subBadge(boolean subBadge) {
+        this.subBadge = subBadge;
+        return this;
+    }
+
+    /**
+     * Which way the banner faces: {@code center}, {@code left} or {@code right}.
+     * <p>
+     * The side alignments use different artwork — one flat end to sit flush against the screen
+     * edge, the flourish on the inner end only — and are pinned to that edge rather than
+     * centred, so they hold their place at any resolution. Their text reads from the same edge,
+     * and the banner unrolls away from it instead of parting from the middle.
+     */
+    public AnnouncementBadge align(String alignment) {
+        this.alignment = alignment == null ? "center" : alignment;
+        return this;
+    }
+
+    /**
+     * How long the banner takes to unroll, in milliseconds. Zero opens it already open.
+     * <p>
+     * The hold is counted from the end of this, so a longer sweep lengthens the badge's life
+     * rather than eating into the time it is readable.
+     */
+    public AnnouncementBadge sweepIn(int millis) {
+        this.sweepIn = Math.max(0, millis);
+        return this;
+    }
+
+    /** How long the closing sweep takes. Zero cuts it rather than playing an outro. */
+    public AnnouncementBadge sweepOut(int millis) {
+        this.sweepOut = Math.max(0, millis);
+        return this;
+    }
+
+    /** How long the text takes to fade in once the banner has opened. Zero snaps it on. */
+    public AnnouncementBadge contentFade(int millis) {
+        this.contentFade = Math.max(0, millis);
+        return this;
+    }
+
+    /** All three animation timings at once. */
+    public AnnouncementBadge timings(int sweepIn, int sweepOut, int contentFade) {
+        return sweepIn(sweepIn).sweepOut(sweepOut).contentFade(contentFade);
+    }
+
     public String getTitle() { return title; }
     public String getSubtitle() { return subtitle; }
     public String getDescription() { return description; }
     public String getCaptionLabel() { return captionLabel; }
     public String getCaption() { return caption; }
+    public int getPlateColor() { return plateColor; }
+    public String getAlignment() { return alignment; }
+    public int getSweepIn() { return sweepIn; }
+    public int getSweepOut() { return sweepOut; }
+    public int getContentFade() { return contentFade; }
+    public boolean isSubBadge() { return subBadge; }
     public String getIcon() { return icon; }
     public int getIconSize() { return iconSize; }
     public int getColor() { return color; }
