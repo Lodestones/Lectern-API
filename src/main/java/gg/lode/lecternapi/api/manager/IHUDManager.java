@@ -483,4 +483,7 @@ public interface IHUDManager {
 
     /** Clears every layout variable. */
     void clearLayoutVariables(Player player);
+
+    /** Takes down one badge slot by id, leaving the rest of the stack up. */
+    void hideBadge(Player player, String id);
 }

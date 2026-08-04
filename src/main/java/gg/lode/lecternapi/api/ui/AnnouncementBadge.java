@@ -44,6 +44,7 @@ public class AnnouncementBadge {
     private int plateColor = 0;
     private String alignment = "center";
     private boolean subBadge = false;
+    private String id = "default";
     private int sweepIn = 420;
     private int sweepOut = 320;
     private int contentFade = 200;
@@ -184,6 +185,18 @@ public class AnnouncementBadge {
     }
 
     /**
+     * The slot this badge occupies.
+     * <p>
+     * Badges with different ids stack on screen together; showing one whose id is already up
+     * updates that badge in place, keeping its position in the stack rather than replaying its
+     * intro. Unset, every badge shares one slot and each replaces the last.
+     */
+    public AnnouncementBadge id(String id) {
+        this.id = id == null || id.isEmpty() ? "default" : id;
+        return this;
+    }
+
+    /**
      * Draws the badge as a sub-badge: a slimmer hatched bar instead of the full banner.
      * <p>
      * For the secondary line under an announcement — a category, a rarity, a qualifier — where
@@ -247,6 +260,7 @@ public class AnnouncementBadge {
     public int getSweepOut() { return sweepOut; }
     public int getContentFade() { return contentFade; }
     public boolean isSubBadge() { return subBadge; }
+    public String getId() { return id; }
     public String getIcon() { return icon; }
     public int getIconSize() { return iconSize; }
     public int getColor() { return color; }
