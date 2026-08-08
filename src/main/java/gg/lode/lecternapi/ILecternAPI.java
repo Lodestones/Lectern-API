@@ -43,6 +43,12 @@ public interface ILecternAPI {
 
     ICutsceneManager getCutsceneManager();
 
+    /**
+     * Pages authored in the Lectern UI editor — loaded from {@code plugins/Lectern/layouts},
+     * opened with their own behaviour, and bound to their own actions.
+     */
+    ILayoutManager getLayoutManager();
+
     IPingManager getPingManager();
 
     IFlareManager getFlareManager();
