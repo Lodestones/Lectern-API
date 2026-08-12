@@ -43,6 +43,12 @@ public class AnnouncementBadge {
     private boolean persistent = false;
     private int plateColor = 0;
     private String alignment = "center";
+    /**
+     * Vertical anchor: {@code top}, {@code center} or {@code bottom}. Empty keeps the historical
+     * band a little above the middle of the screen, so a badge written before this existed does
+     * not move.
+     */
+    private String verticalAlignment = "";
     private boolean subBadge = false;
     private String id = "default";
     private int sweepIn = 420;
@@ -222,6 +228,26 @@ public class AnnouncementBadge {
     }
 
     /**
+     * Anchors the badge vertically as well: {@code top}, {@code center} or {@code bottom}.
+     * <p>
+     * Same idea as the horizontal alignment — the badge is pinned to that edge and its
+     * {@link #offset(float, float)} becomes a nudge from it, so it holds its place at any
+     * resolution or aspect ratio rather than drifting as the screen changes shape.
+     * <p>
+     * Left unset, a badge keeps the fixed band above centre it has always used.
+     */
+    public AnnouncementBadge align(String horizontal, String vertical) {
+        align(horizontal);
+        return verticalAlign(vertical);
+    }
+
+    /** Vertical anchor on its own, for a badge whose horizontal alignment is already set. */
+    public AnnouncementBadge verticalAlign(String vertical) {
+        this.verticalAlignment = vertical == null ? "" : vertical.trim().toLowerCase(java.util.Locale.ROOT);
+        return this;
+    }
+
+    /**
      * How long the banner takes to unroll, in milliseconds. Zero opens it already open.
      * <p>
      * The hold is counted from the end of this, so a longer sweep lengthens the badge's life
@@ -256,6 +282,7 @@ public class AnnouncementBadge {
     public String getCaption() { return caption; }
     public int getPlateColor() { return plateColor; }
     public String getAlignment() { return alignment; }
+    public String getVerticalAlignment() { return verticalAlignment; }
     public int getSweepIn() { return sweepIn; }
     public int getSweepOut() { return sweepOut; }
     public int getContentFade() { return contentFade; }
