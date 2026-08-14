@@ -17,7 +17,7 @@ import org.bukkit.Location;
  *
  * <pre>{@code
  * api.getHUDManager().setAnchor(player, new WorldAnchor("objective", location)
- *         .icon("lectern:textures/gui/anchor_pin.png", 11f)
+ *         .icon("lectern:textures/gui/anchor_pin.png", 11f)   // or .item("minecraft:iron_ingot")
  *         .arrowColor(0xFFFFC83C)
  *         .labels("<white>Objective", "<gray>%distance%m")
  *         .maxDistance(200f));
@@ -39,6 +39,8 @@ public class WorldAnchor {
     private int arrowColor = 0xFFFFFFFF;
     private String topText = "";
     private String bottomText = "";
+    private String item = "";
+    private String itemModel = "";
 
     /**
      * @param id       the anchor's key; setting another with the same id replaces it, which is
@@ -76,6 +78,35 @@ public class WorldAnchor {
     public WorldAnchor icon(String icon, float size) {
         this.icon = icon == null ? "" : icon;
         this.iconSize = size;
+        return this;
+    }
+
+    /**
+     * Draw an item at the marker instead of a texture — the client renders the stack itself, the
+     * way an inventory slot does.
+     * <p>
+     * Marking a dropped sword is the case this exists for: a texture path has to be guessed from
+     * the item and the guess is wrong wherever a pack's art doesn't sit where the name implies,
+     * while an item id is something the client can look up and always render. Set when the marker
+     * stands for an item; leave it and use {@link #icon(String, float)} for anything else.
+     *
+     * @param itemId the registry id, e.g. {@code minecraft:iron_ingot}
+     */
+    public WorldAnchor item(String itemId) {
+        return item(itemId, "");
+    }
+
+    /**
+     * As above, for an item a resource pack re-skins.
+     *
+     * @param itemId    the registry id the client looks up
+     * @param itemModel the {@code item_model} the stack carries, e.g. {@code lodestone:time_sword};
+     *                  empty to draw the item's own art. Applied client-side, so the pack decides
+     *                  what it looks like exactly as it would in a hand or a slot
+     */
+    public WorldAnchor item(String itemId, String itemModel) {
+        this.item = itemId == null ? "" : itemId;
+        this.itemModel = itemModel == null ? "" : itemModel;
         return this;
     }
 
@@ -117,4 +148,6 @@ public class WorldAnchor {
     public int getArrowColor() { return arrowColor; }
     public String getTopText() { return topText; }
     public String getBottomText() { return bottomText; }
+    public String getItem() { return item; }
+    public String getItemModel() { return itemModel; }
 }
