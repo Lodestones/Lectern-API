@@ -60,6 +60,8 @@ public class LayoutBehavior {
     private boolean displayHotbar = true;
     private boolean displayHand = true;
     private boolean hudOnClose;
+    private boolean hideHud;
+    private final java.util.Set<String> hiddenHudElements = new java.util.LinkedHashSet<>();
     private float cursorSize = 10f;
     private float cursorSpeed = 1f;
 
@@ -130,6 +132,38 @@ public class LayoutBehavior {
         return this;
     }
 
+    /**
+     * Hides the vanilla HUD for as long as the layout is up, the way F1 does.
+     * <p>
+     * The layout itself keeps drawing — this suppresses Minecraft's own interface, not Lectern's,
+     * so a cutscene or a full-screen page can own the view without the player's hearts and hotbar
+     * showing through it. Nothing is toggled on the player's settings: the moment the layout stops,
+     * the HUD is back exactly as they left it.
+     */
+    public LayoutBehavior hideHud(boolean hideHud) {
+        this.hideHud = hideHud;
+        return this;
+    }
+
+    /**
+     * Hides individual vanilla HUD elements rather than all of them.
+     * <p>
+     * Recognised names are {@code hotbar}, {@code hearts}, {@code hunger}, {@code armor},
+     * {@code oxygen} and {@code experience} — anything else is ignored rather than rejected, so a
+     * layout naming an element a newer client knows about still loads here.
+     */
+    public LayoutBehavior hideHudElements(java.util.Collection<String> elements) {
+        hiddenHudElements.clear();
+        if (elements != null) {
+            for (String element : elements) {
+                if (element != null && !element.isBlank()) {
+                    hiddenHudElements.add(element.trim().toLowerCase(java.util.Locale.ROOT));
+                }
+            }
+        }
+        return this;
+    }
+
     /** Leaves the layout drawing as a HUD overlay once the GUI screen closes. */
     public LayoutBehavior hudOnClose(boolean hudOnClose) {
         this.hudOnClose = hudOnClose;
@@ -160,6 +194,11 @@ public class LayoutBehavior {
     public boolean isDisplayHotbar() { return displayHotbar; }
     public boolean isDisplayHand() { return displayHand; }
     public boolean isHudOnClose() { return hudOnClose; }
+    public boolean isHideHud() { return hideHud; }
+    /** Unmodifiable; edit through {@link #hideHudElements(java.util.Collection)}. */
+    public java.util.Set<String> getHiddenHudElements() {
+        return java.util.Collections.unmodifiableSet(hiddenHudElements);
+    }
     public float getCursorSize() { return cursorSize; }
     public float getCursorSpeed() { return cursorSpeed; }
 
@@ -183,6 +222,8 @@ public class LayoutBehavior {
                 .displayHotbar(displayHotbar)
                 .displayHand(displayHand)
                 .hudOnClose(hudOnClose)
+                .hideHud(hideHud)
+                .hideHudElements(hiddenHudElements)
                 .cursorSize(cursorSize)
                 .cursorSpeed(cursorSpeed);
     }
