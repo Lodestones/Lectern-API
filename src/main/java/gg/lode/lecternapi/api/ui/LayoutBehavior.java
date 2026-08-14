@@ -61,6 +61,7 @@ public class LayoutBehavior {
     private boolean displayHand = true;
     private boolean hudOnClose;
     private boolean hideHud;
+    private boolean topmost;
     private final java.util.Set<String> hiddenHudElements = new java.util.LinkedHashSet<>();
     private float cursorSize = 10f;
     private float cursorSpeed = 1f;
@@ -133,6 +134,18 @@ public class LayoutBehavior {
     }
 
     /**
+     * Draws the layout above Minecraft's own HUD, including chat, the scoreboard and the tab list.
+     * <p>
+     * Off by default, and deliberately so: Lectern draws before the vanilla HUD precisely so a
+     * badge can sit behind the scoreboard rather than over the top of it. A layout that is the
+     * whole screen for a moment — a cutscene, a title card — wants the opposite, and this is it.
+     */
+    public LayoutBehavior topmost(boolean topmost) {
+        this.topmost = topmost;
+        return this;
+    }
+
+    /**
      * Hides the vanilla HUD for as long as the layout is up, the way F1 does.
      * <p>
      * The layout itself keeps drawing — this suppresses Minecraft's own interface, not Lectern's,
@@ -195,6 +208,7 @@ public class LayoutBehavior {
     public boolean isDisplayHand() { return displayHand; }
     public boolean isHudOnClose() { return hudOnClose; }
     public boolean isHideHud() { return hideHud; }
+    public boolean isTopmost() { return topmost; }
     /** Unmodifiable; edit through {@link #hideHudElements(java.util.Collection)}. */
     public java.util.Set<String> getHiddenHudElements() {
         return java.util.Collections.unmodifiableSet(hiddenHudElements);
@@ -223,6 +237,7 @@ public class LayoutBehavior {
                 .displayHand(displayHand)
                 .hudOnClose(hudOnClose)
                 .hideHud(hideHud)
+                .topmost(topmost)
                 .hideHudElements(hiddenHudElements)
                 .cursorSize(cursorSize)
                 .cursorSpeed(cursorSpeed);
