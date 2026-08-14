@@ -166,6 +166,17 @@ public interface IEmoteManager {
     default void toggleEmoteWheel(Player player) {
     }
 
+    /**
+     * Closes the wheel by taking whatever slot the cursor is on, exactly as a click would.
+     * <p>
+     * This is what a hold-to-open wheel needs when the key comes up: the player has already said
+     * which slot they mean by pointing at it, and only the client knows where they are pointing.
+     * Hiding the wheel instead reports a dismissal and throws that choice away. Resting on no slot
+     * still cancels, so letting go while pointing at nothing means nothing.
+     */
+    default void commitEmoteWheel(Player player) {
+    }
+
     /** Closes the wheel and forgets its slots. */
     default void clearEmoteWheel(Player player) {
     }
