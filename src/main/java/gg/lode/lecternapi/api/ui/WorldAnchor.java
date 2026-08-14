@@ -41,6 +41,8 @@ public class WorldAnchor {
     private String bottomText = "";
     private String item = "";
     private String itemModel = "";
+    private String head = "";
+    private boolean showOffscreen = true;
 
     /**
      * @param id       the anchor's key; setting another with the same id replaces it, which is
@@ -110,6 +112,30 @@ public class WorldAnchor {
         return this;
     }
 
+    /**
+     * Draw a player's head at the marker — for a marker that stands for a person, which reads
+     * faster than any icon a server could pick.
+     *
+     * @param uuidOrName the player's UUID, or their name. A name is resolved against the players
+     *                   the client can see; a UUID always works, so prefer it when you have one
+     */
+    public WorldAnchor head(String uuidOrName) {
+        this.head = uuidOrName == null ? "" : uuidOrName;
+        return this;
+    }
+
+    /**
+     * Whether the marker shows an arrow at the screen edge while the target is behind the player.
+     * <p>
+     * On by default: a marker worth placing is usually worth finding. Turning it off keeps the
+     * marker to what is actually in view, which is what you want when several are up at once and
+     * a ring of arrows would say less than the world does.
+     */
+    public WorldAnchor showOffscreen(boolean showOffscreen) {
+        this.showOffscreen = showOffscreen;
+        return this;
+    }
+
     /** ARGB tint for the icon. */
     public WorldAnchor iconColor(int argb) {
         this.iconColor = argb;
@@ -150,4 +176,6 @@ public class WorldAnchor {
     public String getBottomText() { return bottomText; }
     public String getItem() { return item; }
     public String getItemModel() { return itemModel; }
+    public String getHead() { return head; }
+    public boolean isShowOffscreen() { return showOffscreen; }
 }
