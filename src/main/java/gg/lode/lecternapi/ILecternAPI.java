@@ -57,6 +57,12 @@ public interface ILecternAPI {
 
     IUIManager getUIManager();
 
+    /**
+     * Storm circles, markers and routes on a player's map. The map's picture is the client's own;
+     * this is what goes on top of it.
+     */
+    IMapManager getMapManager();
+
     IImpactFrameManager getImpactFrameManager();
 
     IExplosionManager getExplosionManager();
