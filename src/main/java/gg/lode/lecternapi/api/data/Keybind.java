@@ -13,7 +13,9 @@ public enum Keybind {
     JUMP("jump"),
     SNEAK("sneak"),
     INVENTORY("inventory"),
-    TOGGLE_PERSPECTIVE("togglePerspective");
+    TOGGLE_PERSPECTIVE("togglePerspective"),
+    /** Tab — the player list. */
+    PLAYER_LIST("player_list");
 
     private final String key;
 
