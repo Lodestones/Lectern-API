@@ -1,7 +1,10 @@
 package gg.lode.lecternapi.api.data;
 
 /**
- * Represents a Minecraft keybind that can be disabled/enabled on the Lectern client.
+ * A Minecraft keybind that can be disabled or enabled on the Lectern client.
+ *
+ * <p>The string each one carries is the identifier the client matches on, so a constant only works
+ * if the client knows the same spelling. Every value here is one the client maps.
  */
 public enum Keybind {
     ATTACK("attack"),
@@ -12,10 +15,32 @@ public enum Keybind {
     RIGHT("right"),
     JUMP("jump"),
     SNEAK("sneak"),
+    SPRINT("sprint"),
     INVENTORY("inventory"),
-    TOGGLE_PERSPECTIVE("togglePerspective"),
+    DROP("drop"),
+    SWAP_OFFHAND("swap_offhand"),
+    PICK_ITEM("pick_item"),
+    CHAT("chat"),
+    COMMAND("command"),
     /** Tab — the player list. */
-    PLAYER_LIST("player_list");
+    PLAYER_LIST("player_list"),
+    ADVANCEMENTS("advancements"),
+    TOGGLE_PERSPECTIVE("toggle_perspective"),
+    SMOOTH_CAMERA("smooth_camera"),
+    SPECTATOR_OUTLINES("spectator_outlines"),
+    SCREENSHOT("screenshot"),
+    FULLSCREEN("fullscreen"),
+    SAVE_HOTBAR_TOOLBAR("save_hotbar_toolbar"),
+    LOAD_HOTBAR_TOOLBAR("load_hotbar_toolbar"),
+    HOTBAR_1("hotbar_1"),
+    HOTBAR_2("hotbar_2"),
+    HOTBAR_3("hotbar_3"),
+    HOTBAR_4("hotbar_4"),
+    HOTBAR_5("hotbar_5"),
+    HOTBAR_6("hotbar_6"),
+    HOTBAR_7("hotbar_7"),
+    HOTBAR_8("hotbar_8"),
+    HOTBAR_9("hotbar_9");
 
     private final String key;
 
