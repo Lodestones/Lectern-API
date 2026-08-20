@@ -29,6 +29,14 @@ public record LayoutAction(String element, Trigger trigger, Type type, String va
         RIGHT_CLICK,
         /** The cursor entering the element, in GUI mode. */
         HOVER,
+        /**
+         * The cursor leaving the element, in GUI mode.
+         *
+         * <p>The counterpart to {@link #HOVER}. Without it a server can tell that a pointer arrived
+         * but never that it left, so anything switched on by a hover had no signal to switch it
+         * back off again.
+         */
+        HOVER_END,
         /** The layout being opened. Fires server-side; no client interaction needed. */
         OPEN,
         /** The layout being closed, for any reason. Fires server-side. */
@@ -55,7 +63,7 @@ public record LayoutAction(String element, Trigger trigger, Type type, String va
          * supports; the pointer triggers only fire on a client that sends interactions back.
          */
         public boolean requiresClient() {
-            return this == CLICK || this == RIGHT_CLICK || this == HOVER;
+            return this == CLICK || this == RIGHT_CLICK || this == HOVER || this == HOVER_END;
         }
     }
 
