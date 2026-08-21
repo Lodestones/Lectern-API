@@ -80,5 +80,32 @@ public interface ILayoutManager {
      *
      * @return how many actions ran
      */
+    /**
+     * Plays a layout published on lode.gg, fetched by its shared id.
+     *
+     * <p>Unlike {@link #open}, which draws on the pages in the server's own layouts folder, this
+     * plays a document its author published from the editor — so a change made on the site reaches
+     * the server without a file drop or a restart.
+     *
+     * <p>The document is cached after the first fetch and reused. The fetch itself runs off the main
+     * thread and the playback hops back onto it, so a slow answer from lode.gg costs a frame of
+     * lateness rather than a stalled tick. Call {@link #clearPublishedCache()} to pick up an edit.
+     *
+     * @param publishedId the shared id from the editor
+     * @param scene       a named scene of the project — an intro, an idle, an outro — or null for
+     *                    whichever the project was left on
+     */
+    void openPublished(Player player, String publishedId, String scene);
+
+    /** Takes a published layout off screen, by the same id it was opened with. */
+    void closePublished(Player player, String publishedId);
+
+    /**
+     * Forgets every cached published document, so the next play fetches it again.
+     *
+     * @return how many were being held
+     */
+    int clearPublishedCache();
+
     int fire(Player player, String pageId, String elementRef, LayoutAction.Trigger trigger);
 }
