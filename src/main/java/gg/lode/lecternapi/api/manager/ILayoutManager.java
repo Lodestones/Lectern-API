@@ -1,6 +1,7 @@
 package gg.lode.lecternapi.api.manager;
 
 import gg.lode.lecternapi.api.ui.LayoutAction;
+import gg.lode.lecternapi.api.ui.LayoutTransition;
 import gg.lode.lecternapi.api.ui.LayoutPage;
 import org.bukkit.entity.Player;
 
@@ -96,6 +97,18 @@ public interface ILayoutManager {
      *                    whichever the project was left on
      */
     void openPublished(Player player, String publishedId, String scene);
+
+    /**
+     * As above, deciding how the switch looks rather than leaving it to the document.
+     *
+     * <p>Worth using when the server knows something the author could not: a scene cut short by a
+     * round ending wants to leave from wherever it got to, while a deliberate change of state may
+     * want the cut. Pass {@link LayoutTransition#inherit()} to keep the scene's own setting, which
+     * is what the three-argument form does.
+     *
+     * @param transition cut, blend over a number of milliseconds, or inherit
+     */
+    void openPublished(Player player, String publishedId, String scene, LayoutTransition transition);
 
     /** Takes a published layout off screen, by the same id it was opened with. */
     void closePublished(Player player, String publishedId);
