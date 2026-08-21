@@ -20,7 +20,12 @@ package gg.lode.lecternapi.api.ui;
  *         .glow(0xFFD9A33C, 0.35f)
  *         .hold(4000));
  * }</pre>
+ *
+ * @deprecated The client no longer draws badges. The class stays so the plugins that build one go
+ *     on compiling while they are moved onto layouts, which can express the same banner and more
+ *     besides — but nothing is drawn from it any more.
  */
+@Deprecated(since = "1.1.40", forRemoval = true)
 public class AnnouncementBadge {
 
     private String title = "";

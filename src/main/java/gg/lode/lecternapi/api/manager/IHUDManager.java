@@ -405,13 +405,22 @@ public interface IHUDManager {
     }
 
     /**
-     * Shows an announcement badge — the centre-screen trapezoid banner. Showing while one is
-     * already up swaps its contents in place without replaying the opening sweep.
+     * Shows an announcement badge — the centre-screen trapezoid banner.
+     *
+     * @deprecated The client no longer draws badges, so this does nothing. It stays callable while
+     *     the plugins that use it are moved onto layouts, which can express the same banner and a
+     *     good deal more. Expect it to go once they have.
      */
+    @Deprecated(since = "1.1.40", forRemoval = true)
     default void showBadge(Player player, AnnouncementBadge badge) {
     }
 
-    /** Plays the badge's closing sweep. */
+    /**
+     * Plays the badge's closing sweep.
+     *
+     * @deprecated Badges are retired; this does nothing. See {@link #showBadge}.
+     */
+    @Deprecated(since = "1.1.40", forRemoval = true)
     default void hideBadge(Player player) {
     }
 
@@ -484,6 +493,11 @@ public interface IHUDManager {
     /** Clears every layout variable. */
     void clearLayoutVariables(Player player);
 
-    /** Takes down one badge slot by id, leaving the rest of the stack up. */
+    /**
+     * Takes down one badge slot by id, leaving the rest of the stack up.
+     *
+     * @deprecated Badges are retired; this does nothing. See {@link #showBadge}.
+     */
+    @Deprecated(since = "1.1.40", forRemoval = true)
     void hideBadge(Player player, String id);
 }
