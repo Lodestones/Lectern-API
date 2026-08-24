@@ -21,7 +21,7 @@ public class HudShape {
     /** The solids the client can draw. Unknown names fall back to a rectangle. */
     public enum Kind {
         RECTANGLE, SQUARE, CIRCLE, ELLIPSE, TRIANGLE, RIGHT_TRIANGLE,
-        DIAMOND, PENTAGON, HEXAGON, OCTAGON, STAR, ARROW;
+        DIAMOND, PENTAGON, HEXAGON, OCTAGON, STAR, ARROW, PARALLELOGRAM;
 
         public String wireName() {
             return name().toLowerCase(java.util.Locale.ROOT);
