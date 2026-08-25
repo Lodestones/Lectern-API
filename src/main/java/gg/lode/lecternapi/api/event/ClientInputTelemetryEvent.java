@@ -33,6 +33,14 @@ public class ClientInputTelemetryEvent extends Event {
      * @param onEntity        whether the crosshair was on an entity at the time
      * @param crosshairHeldMs how long that entity had been under the crosshair,
      *                        or -1 when the crosshair was not on an entity
+     * @param viewDeltaDeg    total angular view movement, in degrees, over the
+     *                        window immediately before this input, or -1 when the
+     *                        client does not report it
+     * @param acquireViewDeltaDeg total angular view movement over the window before
+     *                        the crosshair acquired its current entity, or -1 when
+     *                        unavailable. This is the field that separates a player
+     *                        who swung onto a target from one a target walked into —
+     *                        see the class note on dwell time below.
      */
     public record InputRecord(
             boolean mouse,
@@ -42,11 +50,45 @@ public class ClientInputTelemetryEvent extends Event {
             long timestampMs,
             String boundTo,
             boolean onEntity,
-            long crosshairHeldMs
+            long crosshairHeldMs,
+            float viewDeltaDeg,
+            float acquireViewDeltaDeg
     ) {
+        /**
+         * Kept so consumers built against the eight-field record still compile and link.
+         * The view fields read as -1, which every check treats as "not reported".
+         */
+        public InputRecord(boolean mouse, int code, int scancode, boolean pressed,
+                           long timestampMs, String boundTo, boolean onEntity, long crosshairHeldMs) {
+            this(mouse, code, scancode, pressed, timestampMs, boundTo, onEntity, crosshairHeldMs,
+                    -1.0f, -1.0f);
+        }
+
         /** True when this input is bound to nothing in the player's controls. */
         public boolean isUnbound() {
             return boundTo == null || boundTo.isEmpty();
+        }
+
+        /** Whether this record carries view-movement data at all. */
+        public boolean hasViewData() {
+            return viewDeltaDeg >= 0.0f;
+        }
+
+        /**
+         * Whether the crosshair's current target arrived under it rather than being swung
+         * onto — the target moved into a near-stationary view.
+         * <p>
+         * This distinction is what makes dwell time usable. A human who clicks predictively,
+         * sweeping the crosshair onto a stationary target with the click already committed,
+         * shows near-zero dwell and is entirely legitimate; dwell alone therefore cannot
+         * separate them from a bot. When the target walked in instead, a human needs visual
+         * reaction time — a floor of roughly 150ms that nobody beats — while a trigger bot
+         * fires in a handful of milliseconds either way.
+         *
+         * @param maxDeg how still the view has to have been to count as stationary
+         */
+        public boolean targetInducedAcquisition(float maxDeg) {
+            return acquireViewDeltaDeg >= 0.0f && acquireViewDeltaDeg <= maxDeg;
         }
     }
 
