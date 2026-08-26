@@ -171,4 +171,60 @@ public interface IAuraManager {
      * @param player the target player
      */
     void clearLocationalAuras(Player player);
+
+    // --- Scan Pulse (depth-reconstructed scanning wave) ---
+
+    /**
+     * Plays a scan pulse: a fullscreen post-effect scanning wave that expands from a world
+     * position and tints pixels within the expanding wavefront. Renders a screen-space effect
+     * with depth reconstruction, enabling arbitrarily large reach with constant GPU cost.
+     *
+     * The wavefront expands linearly: radius = reach × (elapsed / duration). The wave band
+     * has a configurable thickness and trailing fade effect for visual continuity.
+     *
+     * @param player          the target player
+     * @param id              a unique identifier for this pulse (used to stop it)
+     * @param x               the world x coordinate (anchor point)
+     * @param y               the world y coordinate (anchor point)
+     * @param z               the world z coordinate (anchor point)
+     * @param reach           how far the wavefront travels in blocks before stopping (0.1 minimum)
+     * @param duration        how long the entire pulse lasts in seconds (0.1 minimum)
+     * @param red             red tint color component (0-255)
+     * @param green           green tint color component (0-255)
+     * @param blue            blue tint color component (0-255)
+     * @param bandWidth       thickness of the wavefront band in blocks (default: 2.0, 0.1 minimum)
+     * @param trailingFade    how aggressively the trailing edge fades (0.0=uniform, 1.0=sharp falloff, default: 0.5)
+     * @param residual        share of the tint kept on everything the front has already crossed
+     *                        (0.0=nothing left behind, 1.0=scanned volume as bright as the front)
+     * @param trailWidth      how far back from the front the residual tint reaches, in blocks, so
+     *                        the tinted region is a ring chasing the front rather than a filled
+     *                        disc (0.0 = unbounded, the whole swept volume stays tinted)
+     * @param echoStrength    brightness of the quieter second ring riding the trail's inner edge
+     *                        (0.0=none, 1.0=as bright as the front; ignored when trailWidth is 0)
+     */
+    default void playScanPulse(Player player, String id, float x, float y, float z,
+                               float reach, float duration, int red, int green, int blue,
+                               float bandWidth, float trailingFade, float residual,
+                               float trailWidth, float echoStrength) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Stops a scan pulse by its identifier.
+     *
+     * @param player the target player
+     * @param id     the pulse identifier
+     */
+    default void stopScanPulse(Player player, String id) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Clears all scan pulse effects on the target player's client.
+     *
+     * @param player the target player
+     */
+    default void clearScanPulses(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }

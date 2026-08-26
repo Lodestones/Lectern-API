@@ -3,6 +3,8 @@ package gg.lode.lecternapi;
 import gg.lode.lecternapi.api.manager.*;
 
 import org.bukkit.entity.Player;
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Nullable;
 
 public interface ILecternAPI {
 
@@ -13,6 +15,20 @@ public interface ILecternAPI {
      * @param player the player to reset
      */
     void resetAllEffects(Player player);
+
+    /**
+     * Disconnects a player cleanly from the server via a client-side disconnect packet.
+     * The player returns to the multiplayer screen or title screen with the provided reason message.
+     * <p>
+     * This is distinct from kicking via the vanilla protocol: the client initiates the disconnect
+     * itself rather than the server forcing it, allowing the client to tear down its world and
+     * Lectern state gracefully before showing the disconnect screen.
+     *
+     * @param player the player to disconnect
+     * @param reason an optional disconnect reason to display on the client's disconnect screen.
+     *               If null, a default message is shown on the client.
+     */
+    void disconnectPlayer(Player player, @Nullable Component reason);
 
     ICameraManager getCameraManager();
 
