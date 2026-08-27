@@ -1,5 +1,6 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.data.Perspective;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -61,8 +62,38 @@ public interface ICameraManager {
 
     /**
      * Forces the player into third-person camera mode.
+     *
+     * @deprecated superseded by {@link #setPerspective(Player, Perspective)}, which can also ask for
+     * the front view and says which view it means rather than leaving {@code false} to stand for
+     * "first person". Still sent, and still the only thing an un-updated client understands.
      */
+    @Deprecated
     void setForceThirdPerson(Player player, boolean enabled);
+
+    /**
+     * Pins the player's camera to a perspective and holds it there.
+     *
+     * <p>A lock, not a nudge: the client re-asserts it every frame, so nothing the player or another
+     * effect does moves the camera off it until {@link #resetPerspective(Player)}. Locking to
+     * {@link Perspective#FIRST_PERSON} is therefore a real thing to ask for — it is how a menu or a
+     * cutscene keeps somebody who pressed F5 from looking at their own back.
+     *
+     * <p>{@link Perspective#THIRD_PERSON_FRONT} needs a client on the version that added this; an
+     * older one falls back to first person rather than to a view nobody asked for.
+     *
+     * @param player the target player
+     * @param perspective the view to hold, never null
+     */
+    default void setPerspective(Player player, Perspective perspective) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Releases a {@link #setPerspective(Player, Perspective)} lock and hands F5 back.
+     */
+    default void resetPerspective(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 
     /**
      * Forces the player into shoulder surfing camera mode.
