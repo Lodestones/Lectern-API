@@ -28,7 +28,11 @@ public interface ILecternAPI {
      * @param reason an optional disconnect reason to display on the client's disconnect screen.
      *               If null, a default message is shown on the client.
      */
-    void disconnectPlayer(Player player, @Nullable Component reason);
+    default void disconnectPlayer(Player player, @Nullable Component reason) {
+        // Default rather than abstract so a loader shading this interface still links against an
+        // older impl blob: the loader ships on its own schedule, and an abstract method added here
+        // would be an AbstractMethodError on every server whose blob has not caught up.
+    }
 
     ICameraManager getCameraManager();
 
