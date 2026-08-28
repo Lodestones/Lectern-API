@@ -62,6 +62,7 @@ public class LayoutBehavior {
     private boolean hudOnClose;
     private boolean hideHud;
     private boolean topmost;
+    private int index;
     private final java.util.Set<String> hiddenHudElements = new java.util.LinkedHashSet<>();
     private float cursorSize = 10f;
     private float cursorSpeed = 1f;
@@ -146,6 +147,23 @@ public class LayoutBehavior {
     }
 
     /**
+     * Where this layout sits when more than one is on screen at once.
+     * <p>
+     * A higher index draws above, is hit-tested first, and is the one whose settings apply — what
+     * is hidden, whether the hotbar shows, whether the world blurs. The layout underneath keeps
+     * playing the whole time and takes its own settings back the moment the one above it stops, so
+     * a page opened over a permanent HUD is a page opened over it rather than in place of it.
+     * <p>
+     * Zero is the base and the default. Settings do not merge: the top layout answers for all of
+     * them, because a page that wants the hotbar back has no way to say so to a page below that
+     * hid it.
+     */
+    public LayoutBehavior index(int index) {
+        this.index = Math.max(0, index);
+        return this;
+    }
+
+    /**
      * Hides the vanilla HUD for as long as the layout is up, the way F1 does.
      * <p>
      * The layout itself keeps drawing — this suppresses Minecraft's own interface, not Lectern's,
@@ -209,6 +227,7 @@ public class LayoutBehavior {
     public boolean isHudOnClose() { return hudOnClose; }
     public boolean isHideHud() { return hideHud; }
     public boolean isTopmost() { return topmost; }
+    public int getIndex() { return index; }
     /** Unmodifiable; edit through {@link #hideHudElements(java.util.Collection)}. */
     public java.util.Set<String> getHiddenHudElements() {
         return java.util.Collections.unmodifiableSet(hiddenHudElements);
@@ -238,6 +257,7 @@ public class LayoutBehavior {
                 .hudOnClose(hudOnClose)
                 .hideHud(hideHud)
                 .topmost(topmost)
+                .index(index)
                 .hideHudElements(hiddenHudElements)
                 .cursorSize(cursorSize)
                 .cursorSpeed(cursorSpeed);
