@@ -7,7 +7,7 @@ import java.util.Locale;
  * <p>
  * For taking the whole interface away at once, hide the HUD instead — this is for stripping
  * out only what breaks a scene (hearts and hunger for something that shouldn't feel like a
- * survival game) while leaving chat, crosshair and the rest in place.
+ * survival game) while leaving chat and the rest in place.
  */
 public enum HudElement {
     /** The food bar. */
@@ -21,7 +21,9 @@ public enum HudElement {
     /** The air bubbles shown underwater. */
     OXYGEN,
     /** The experience bar and the level number above it. */
-    EXPERIENCE;
+    EXPERIENCE,
+    /** The crosshair, the re-centred one drawn for the shoulder camera included. */
+    CROSSHAIR;
 
     /** Wire identifier sent to the client. */
     public String getId() {
