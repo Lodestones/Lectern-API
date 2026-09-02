@@ -34,6 +34,11 @@ public enum VerityClip {
      * it. Paired with a grabbed victim, this is also what drives the bite and leaves a corpse.
      */
     JUMPSCARE("Jumpscare"),
+    /**
+     * A swing. Plays over locomotion and hands control straight back, so the monster can keep
+     * walking through it — what lands the blow is the server, not the clip.
+     */
+    ATTACK("Attack"),
     /** Transforming into the monster. */
     MONSTER_TRANSFORM("Monster Transform"),
     /** Transforming back into the ball. */
