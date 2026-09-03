@@ -356,7 +356,11 @@ public abstract class PacketComponent {
 
         /**
          * Adds a player bust render to the component.
+         *
+         * @deprecated Player busts are no longer drawn — the render came from a third-party
+         *             service and the layout editor replaces it. Adds nothing.
          */
+        @Deprecated
         public ElementHandle addPlayer(String reference, String identifier, MenuTransform relativeTransform, float width, float height) {
             String qualifiedRef = qualifyRef(reference);
             elements.put(qualifiedRef, new ElementData.PlayerData(identifier, relativeTransform, width, height));

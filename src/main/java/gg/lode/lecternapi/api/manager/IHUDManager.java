@@ -115,12 +115,21 @@ public interface IHUDManager {
      * @param alpha the opacity (0.0 to 1.0)
      * @param horizontalAlignment horizontal alignment
      * @param verticalAlignment vertical alignment
+     * @deprecated Player busts are no longer drawn. The bust was rendered by a third-party
+     *             service from the player's name; the layout editor replaces it. This does
+     *             nothing.
      */
+    @Deprecated
     void renderPlayer(Player player, String reference, String identifier, float x, float y, int layer, float width, float height, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment);
 
     /**
      * Removes a rendered player bust from the player's HUD.
+     *
+     * @deprecated Player busts are no longer drawn. The bust was rendered by a third-party
+     *             service from the player's name; the layout editor replaces it. This does
+     *             nothing.
      */
+    @Deprecated
     void removePlayer(Player player, String reference);
 
     /**
@@ -374,7 +383,12 @@ public interface IHUDManager {
      * Renders a player bust with a fade envelope.
      *
      * @see #renderTexture(Player, String, String, float, float, int, float, float, float, HorizontalAlignment, VerticalAlignment, long, long, long)
+     *
+     * @deprecated Player busts are no longer drawn. The bust was rendered by a third-party
+     *             service from the player's name; the layout editor replaces it. This does
+     *             nothing.
      */
+    @Deprecated
     default void renderPlayer(Player player, String reference, String identifier, float x, float y, int layer, float width, float height, float alpha, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, long fadeInMillis, long fadeOutMillis, long durationMillis) {
         renderPlayer(player, reference, identifier, x, y, layer, width, height, alpha, horizontalAlignment, verticalAlignment);
     }
@@ -399,7 +413,14 @@ public interface IHUDManager {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 
-    /** Glides a player bust element to a new position. */
+    /**
+     * Glides a player bust element to a new position.
+     *
+     * @deprecated Player busts are no longer drawn. The bust was rendered by a third-party
+     *             service from the player's name; the layout editor replaces it. This does
+     *             nothing.
+     */
+    @Deprecated
     default void movePlayer(Player player, String reference, float toX, float toY, long durationMillis, HudEasing easing) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }

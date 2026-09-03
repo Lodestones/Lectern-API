@@ -205,7 +205,11 @@ public abstract class PacketMenu {
          * @param transform  positioning data
          * @param width      render width in pixels
          * @param height     render height in pixels
+         *
+         * @deprecated Player busts are no longer drawn — the render came from a third-party
+         *             service and the layout editor replaces it. Adds nothing.
          */
+        @Deprecated
         public Builder addPlayer(String reference, String identifier, MenuTransform transform, float width, float height) {
             elements.add(new PlayerElement(qualifyRef(reference), identifier, transform, width, height));
             return this;
