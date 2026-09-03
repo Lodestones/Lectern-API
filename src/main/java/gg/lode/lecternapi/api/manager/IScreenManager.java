@@ -144,13 +144,13 @@ public interface IScreenManager {
     void clearSwapHands(Player viewer);
 
     /**
-     * Requests a screenshot from the player's client. The screenshot is captured
-     * silently and uploaded back to the server in chunks. When the transfer completes,
-     * a {@link gg.lode.lecternapi.api.event.ClientScreenshotEvent} is fired with the
-     * saved file.
+     * Requests a screenshot from the player's client.
      *
      * @param player the target player
+     * @deprecated The client no longer captures screenshots. This does nothing, and no
+     *             {@link gg.lode.lecternapi.api.event.ClientScreenshotEvent} follows.
      */
+    @Deprecated
     void requestScreenshot(Player player);
 
     /**

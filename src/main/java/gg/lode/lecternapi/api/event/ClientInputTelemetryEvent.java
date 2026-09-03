@@ -16,7 +16,11 @@ import java.util.List;
  * Anti-cheat consumers are expected to look at distributions across many
  * batches (click interval variance, crosshair-to-click latency) rather than
  * to judge any single event.
+ *
+ * @deprecated The client no longer collects input timing telemetry, so this event is never fired.
+ *             Kept so existing listeners still compile.
  */
+@Deprecated
 public class ClientInputTelemetryEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();

@@ -12,7 +12,11 @@ import java.util.List;
  * <p>
  * Third-party plugins can listen to this event to implement custom alt-detection
  * logic (e.g., auto-mute, flag for review, restrict permissions).
+ *
+ * @deprecated The client no longer collects hardware fingerprinting, so this event is never fired.
+ *             Kept so existing listeners still compile.
  */
+@Deprecated
 public class HWIDAltDetectedEvent extends LecternClientEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();

@@ -13,7 +13,11 @@ import java.util.List;
  * <p>
  * This is configuration only — which physical key each action is bound to —
  * and carries no press activity or timing.
+ *
+ * @deprecated The client no longer collects the connect-time keybind layout snapshot, so this event is never fired.
+ *             Kept so existing listeners still compile.
  */
+@Deprecated
 public class ClientKeybindsReportEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();

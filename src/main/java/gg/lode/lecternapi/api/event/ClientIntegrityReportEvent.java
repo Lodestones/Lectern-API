@@ -8,7 +8,11 @@ import org.jetbrains.annotations.NotNull;
  * Fired when a client integrity report has been received from a client.
  * The report is a JSON string containing class hashes, code source validation,
  * JVM arguments, thread info, and classloader info.
+ *
+ * @deprecated The client no longer collects client integrity reports, so this event is never fired.
+ *             Kept so existing listeners still compile.
  */
+@Deprecated
 public class ClientIntegrityReportEvent extends LecternClientEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();

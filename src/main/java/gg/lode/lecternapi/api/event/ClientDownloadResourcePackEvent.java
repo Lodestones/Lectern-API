@@ -10,7 +10,11 @@ import java.util.List;
 /**
  * Fired when the server finishes downloading all resource packs from a client.
  * Contains the list of file paths found inside those packs.
+ *
+ * @deprecated The client no longer collects resource pack uploads, so this event is never fired.
+ *             Kept so existing listeners still compile.
  */
+@Deprecated
 public class ClientDownloadResourcePackEvent extends LecternClientEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();

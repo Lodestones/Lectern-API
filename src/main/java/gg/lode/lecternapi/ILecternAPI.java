@@ -49,6 +49,11 @@ public interface ILecternAPI {
     IInputManager getInputManager();
 
     /** Raw input reporting for anti-cheat consumers. Off for every player by default. */
+    /**
+     * @deprecated Input telemetry was removed from the client. The manager returned still
+     *             answers, and does nothing.
+     */
+    @Deprecated
     IInputTelemetryManager getInputTelemetryManager();
 
     IScreenManager getScreenManager();

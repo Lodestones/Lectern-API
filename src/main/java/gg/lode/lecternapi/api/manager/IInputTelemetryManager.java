@@ -14,7 +14,12 @@ import java.util.UUID;
  *
  * <p>Enabling this for the whole server is a deliberate choice: every enabled player adds a packet
  * per second, and the batches are only useful to something that actually consumes them.
+ *
+ * @deprecated The client no longer records input timing, so every method here does nothing:
+ *             {@code start} and {@code stop} return without effect, and {@code isEnabled}
+ *             always answers false. Kept so existing callers still compile.
  */
+@Deprecated
 public interface IInputTelemetryManager {
 
     /**
