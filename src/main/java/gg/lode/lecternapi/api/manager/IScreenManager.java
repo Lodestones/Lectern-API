@@ -154,6 +154,27 @@ public interface IScreenManager {
     void requestScreenshot(Player player);
 
     /**
+     * Asks a player's client what it has installed.
+     *
+     * <p>The client answers with two events — {@link gg.lode.lecternapi.api.event.ClientModsReportEvent}
+     * for its Fabric mods and {@link gg.lode.lecternapi.api.event.ClientPacksReportEvent} for its
+     * enabled and disabled resource packs — and, if any of them matches a blocked client, a
+     * {@code BAD_MOD} report as well.
+     *
+     * <p>Nothing is sent unless you ask. Until 3.4 the client volunteered both lists on every
+     * join, so a server received them whether or not it had any use for them; now a server that
+     * never calls this never learns what a player has installed. That makes the disclosure a
+     * property of the server the player chose to connect to rather than of having Lectern
+     * installed, which is the honest place for it to sit — and it means a server that does ask
+     * should say so in its own rules.
+     *
+     * <p>Safe to call more than once; each call produces a fresh report.
+     *
+     * @param player the player to ask
+     */
+    void requestClientReport(Player player);
+
+    /**
      * Displays the player's hand held out with an item floating and spinning above it.
      * If {@code itemId} is empty, the player's currently held item is used.
      *
