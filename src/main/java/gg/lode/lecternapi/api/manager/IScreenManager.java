@@ -163,9 +163,10 @@ public interface IScreenManager {
     /**
      * Asks a player's client what it has installed.
      *
-     * <p>The client answers with two events — {@link gg.lode.lecternapi.api.event.ClientModsReportEvent}
-     * for its Fabric mods and {@link gg.lode.lecternapi.api.event.ClientPacksReportEvent} for its
-     * enabled and disabled resource packs — and, if any of them matches a blocked client, a
+     * <p>The client answers with three events — {@link gg.lode.lecternapi.api.event.ClientModsReportEvent}
+     * for its Fabric mods, {@link gg.lode.lecternapi.api.event.ClientPacksReportEvent} for its
+     * enabled and disabled resource packs, and {@link gg.lode.lecternapi.api.event.ClientInstallIdEvent}
+     * for the id of the installation itself — and, if any of its mods matches a blocked client, a
      * {@code BAD_MOD} report as well.
      *
      * <p>Nothing is sent unless you ask. Until 3.4 the client volunteered both lists on every
