@@ -146,11 +146,18 @@ public interface IScreenManager {
     /**
      * Requests a screenshot from the player's client.
      *
+     * <p>The player is told. Every capture flashes a red vignette across their screen, and
+     * nothing in the request can shorten, dim or suppress it — a picture taken quietly is what
+     * Lectern's privacy notice promises cannot happen, so the indicator is part of taking it
+     * rather than a setting. Say so in your own rules if you use this.
+     *
+     * <p>The image is captured after the frame is composited, downscaled, encoded as JPEG and
+     * uploaded off the game channel; a {@link gg.lode.lecternapi.api.event.ClientScreenshotEvent}
+     * is fired with the saved file once it has been pulled back. Nothing arrives if the player's
+     * client is offline-mode or the upload fails.
+     *
      * @param player the target player
-     * @deprecated The client no longer captures screenshots. This does nothing, and no
-     *             {@link gg.lode.lecternapi.api.event.ClientScreenshotEvent} follows.
      */
-    @Deprecated
     void requestScreenshot(Player player);
 
     /**

@@ -9,11 +9,7 @@ import java.io.File;
 /**
  * Fired when a screenshot has been received from a client
  * after a server-initiated screenshot request.
- *
- * @deprecated The client no longer collects client screenshots, so this event is never fired.
- *             Kept so existing listeners still compile.
  */
-@Deprecated
 public class ClientScreenshotEvent extends LecternClientEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
