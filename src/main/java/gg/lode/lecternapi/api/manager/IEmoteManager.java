@@ -152,6 +152,24 @@ public interface IEmoteManager {
      * be prepared ahead of time and opened instantly.
      */
     default void setEmoteWheel(Player player, List<EmoteWheelSlot> slots, int accentColor) {
+        setEmoteWheel(player, slots, accentColor, false);
+    }
+
+    /**
+     * The same, saying whether the wheel should hold the player still while it is open.
+     * <p>
+     * It normally should not. The wheel is opened mid-stride, often mid-fight, and stopping
+     * someone dead to let them pick an emote is a worse surprise than the emote is worth — so
+     * {@code false} is what the three-argument form asks for and what a wheel does by default.
+     * Pass {@code true} where standing still is the point: a lobby, a cutscene, a menu that
+     * happens to be round.
+     * <p>
+     * A client too old to know about the flag ignores it and keeps moving, which is the same
+     * answer it has always given.
+     *
+     * @param stopMovement whether the player is held still for as long as the wheel is up
+     */
+    default void setEmoteWheel(Player player, List<EmoteWheelSlot> slots, int accentColor, boolean stopMovement) {
     }
 
     /**
