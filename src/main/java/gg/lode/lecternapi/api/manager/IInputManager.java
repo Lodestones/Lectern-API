@@ -80,6 +80,27 @@ public interface IInputManager {
     }
 
     /**
+     * The same, but only while the player is actually flying.
+     *
+     * <p>The player decides, tick by tick, by flying or not: in the air they pass through the
+     * world, and the moment they drop out of flight they stand on it again. Usually what is wanted
+     * — it keeps walking, landing and standing on things intact, and makes passing through a wall
+     * something done on purpose rather than the only way to move.
+     *
+     * <p>Decided on the client from its own abilities rather than asked of the server, so the
+     * changeover happens on the tick the key is pressed rather than a packet later. The server's
+     * half should be conditioned the same way: allow the movement only while the player is flying.
+     *
+     * <p>A no-op fallback so a consumer built against this interface still links against an older
+     * implementation; the real implementation overrides it.
+     *
+     * @param player the target player
+     * @param enabled true to pass through blocks while flying, false to collide again
+     */
+    default void setNoClipWhileFlying(Player player, boolean enabled) {
+    }
+
+    /**
      * Disables or enables chunk reload on the player's client.
      * When disabled, the client will not reload chunks.
      *
