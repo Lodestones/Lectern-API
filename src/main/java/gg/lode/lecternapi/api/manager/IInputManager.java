@@ -54,6 +54,32 @@ public interface IInputManager {
     void setHeadLocked(Player player, boolean locked);
 
     /**
+     * Lets a player move through blocks without leaving the game mode they are in.
+     *
+     * <p>Spectator is the only mode where vanilla turns collision off, and entering it costs the
+     * hotbar, the hand and every interaction. This gives the same freedom of movement while the
+     * player stays exactly who they were — for a replay's viewers, who need to get inside a
+     * building to watch a fight and still hold the controls the replay hands them.
+     *
+     * <p>Flight comes with it: a player with collision off and their feet on nothing would fall
+     * until the world ran out.
+     *
+     * <p><b>The caller owns the server's half.</b> Collision is decided on the client, but the
+     * server independently rejects a player who ends up inside a block and teleports them back —
+     * so this must be paired with {@code player.setNoPhysics(true)}, or the client will pass
+     * through the wall and be pulled straight back out of it. Setting it back to false belongs with
+     * turning this off.
+     *
+     * <p>A no-op fallback so a consumer built against this interface still links against an older
+     * implementation; the real implementation overrides it.
+     *
+     * @param player the target player
+     * @param enabled true to pass through blocks, false to collide again
+     */
+    default void setNoClip(Player player, boolean enabled) {
+    }
+
+    /**
      * Disables or enables chunk reload on the player's client.
      * When disabled, the client will not reload chunks.
      *
