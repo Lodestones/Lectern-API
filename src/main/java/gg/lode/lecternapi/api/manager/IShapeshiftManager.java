@@ -27,6 +27,30 @@ public interface IShapeshiftManager {
     void shapeshift(Player viewer, Entity target, String entityTypeId);
 
     /**
+     * Renders an entity as a different entity type, addressing it by uuid.
+     *
+     * <p>For entities the server does not have. A replay draws its subjects from recorded packets
+     * rather than spawning them, so there is no {@link Entity} to pass and no way to disguise one —
+     * the uuid is all that exists, and it is all the client is ever sent.
+     *
+     * @param viewer the player whose client will render the disguise
+     * @param targetUuid the uuid of the entity to disguise
+     * @param entityTypeId the registry ID of the entity type to render as (e.g. "minecraft:blaze")
+     */
+    default void shapeshift(Player viewer, UUID targetUuid, String entityTypeId) {
+        shapeshift(viewer, targetUuid, entityTypeId, "");
+    }
+
+    /**
+     * The same, with a data-driven variant.
+     *
+     * <p>A no-op fallback so a consumer built against this interface still links against an older
+     * implementation; the real implementation overrides it.
+     */
+    default void shapeshift(Player viewer, UUID targetUuid, String entityTypeId, String variant) {
+    }
+
+    /**
      * Renders a target entity as a different entity type with a data-driven variant.
      * Variant names depend on the entity type: registry IDs for data-driven variants
      * (e.g. "minecraft:warm" for pig), or lowercase enum names for others
@@ -72,6 +96,24 @@ public interface IShapeshiftManager {
      * @param blockStateString the block state string (e.g. "minecraft:oak_stairs[facing=east,half=top]")
      */
     void blockShapeshift(Player viewer, Entity target, String blockStateString);
+
+    /**
+     * Renders an entity as a block, addressing it by uuid — for entities the server does not have.
+     *
+     * <p>A no-op fallback so a consumer built against this interface still links against an older
+     * implementation; the real implementation overrides it.
+     *
+     * @param viewer the player whose client will render the disguise
+     * @param targetUuid the uuid of the entity to disguise
+     * @param blockStateString the block state to render as (e.g. "minecraft:oak_log[axis=y]")
+     */
+    default void blockShapeshift(Player viewer, UUID targetUuid, String blockStateString) {
+    }
+
+    /** The same, from a {@link BlockData}. */
+    default void blockShapeshift(Player viewer, UUID targetUuid, BlockData blockData) {
+        if (blockData != null) blockShapeshift(viewer, targetUuid, blockData.getAsString());
+    }
 
     /**
      * Renders a target entity as a block using Bukkit {@link BlockData}.
