@@ -192,4 +192,38 @@ public interface ICameraManager {
     default void stopVerityCam(Player player) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
+
+    /**
+     * Leans the player's camera into their own movement: roll when they strafe, pitch when they
+     * speed up or fall, a roll that lags a fast turn, and a slow drift while they stand still.
+     *
+     * @param player the target player
+     * @param intensity multiplier over the whole effect; 1.0 is the tuned default, 0 is off
+     */
+    default void setCameraSway(Player player, float intensity) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Tunes the individual parts of the sway. Each factor multiplies that part, so 1.0 leaves it
+     * alone and 0 switches it off. Takes effect on whatever {@link #setCameraSway} is running.
+     *
+     * @param player the target player
+     * @param strafeRoll roll from moving sideways
+     * @param turnRoll roll that trails a fast mouse turn
+     * @param forwardPitch pitch from speeding up and stopping
+     * @param verticalPitch pitch from falling and jumping
+     * @param idleSway the drift while standing still
+     */
+    default void setCameraSwayFactors(Player player, float strafeRoll, float turnRoll,
+                                      float forwardPitch, float verticalPitch, float idleSway) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Stops the movement sway and puts the camera back on vanilla rails.
+     */
+    default void stopCameraSway(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }
