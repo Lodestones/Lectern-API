@@ -100,6 +100,21 @@ public interface IInputManager {
     default void setNoClipWhileFlying(Player player, boolean enabled) {
     }
 
+
+    /**
+     * Passing through blocks with gravity left alone, so the player falls through the floor and
+     * keeps falling. Flight is untouched, unlike {@link #setNoClip(Player, boolean)}, which takes it
+     * over to stop exactly this.
+     *
+     * <p>Nothing catches them. Whoever turns this on is expected to be watching, and to put them
+     * somewhere before the world runs out.
+     *
+     * @param player the target player
+     * @param enabled true to fall through the world, false to collide again
+     */
+    default void setNoClipFalling(Player player, boolean enabled) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
     /**
      * Disables or enables chunk reload on the player's client.
      * When disabled, the client will not reload chunks.
