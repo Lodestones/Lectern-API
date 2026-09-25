@@ -1,5 +1,6 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.data.MonsterCostume;
 import gg.lode.lecternapi.api.verity.VerityClip;
 import gg.lode.lecternapi.api.verity.VerityFace;
 import gg.lode.lecternapi.api.verity.VerityFit;
@@ -451,6 +452,92 @@ public interface IEntityManager {
     default void setVerityItemModels(Player player, boolean enabled, int hue) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
+    // --- Monsters ---
+
+    /**
+     * Replaces an entity's rendering with a monster on the target player's client — a fully animated
+     * character model drawn in place of the entity's own.
+     *
+     * <p>Purely visual: the entity keeps its real model server-side and its AI and movement are
+     * untouched. The client animates it from the entity's own motion, cross-fading idle, walk and run
+     * by speed and driving the stride from ground covered rather than from the clock, so it stays in
+     * step at any size or movement speed. Its hitbox and eye height follow the costume client-side,
+     * so a three-block monster sees and collides like one.
+     *
+     * <p>Every costume works this way; they differ only in the model and the measurements taken off
+     * it. {@link #setVerityMonster(Player, UUID, float, int)} is this with
+     * {@link MonsterCostume#VERITY} and remains for the callers that predate the rest.
+     *
+     * @param player the player who will see the monster
+     * @param entityUuid the UUID of the entity to replace
+     * @param costume which monster to dress it as
+     * @param height the model's height in blocks; {@code <= 0} falls back to 2
+     * @param hue 0 for the texture's own colours, otherwise a 1-360 hue tint
+     */
+    default void setMonster(Player player, UUID entityUuid, MonsterCostume costume, float height, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Applies a costume at two blocks tall with no tint. */
+    default void setMonster(Player player, UUID entityUuid, MonsterCostume costume) {
+        setMonster(player, entityUuid, costume, 2.0f, 0);
+    }
+
+    /** Removes one costume from an entity, restoring its normal rendering. */
+    default void removeMonster(Player player, UUID entityUuid, MonsterCostume costume) {
+    }
+
+    /** Removes every entity wearing this costume, for this viewer. */
+    default void clearMonsters(Player player, MonsterCostume costume) {
+    }
+
+    /** Resizes a costume already on an entity. */
+    default void setMonsterHeight(Player player, UUID entityUuid, MonsterCostume costume, float height) {
+    }
+
+    /** Tints a costume already on an entity. 0 restores the texture's own colours. */
+    default void setMonsterHue(Player player, UUID entityUuid, MonsterCostume costume, int hue) {
+    }
+
+    /** Puts a costume on all fours, for the ones whose rig has a crawl. */
+    default void setMonsterCrawling(Player player, UUID entityUuid, MonsterCostume costume, boolean crawling) {
+    }
+
+    /** Whether the wearer sees their own costume in first person. */
+    default void setMonsterFirstPerson(Player player, UUID entityUuid, MonsterCostume costume, boolean visible) {
+    }
+
+    /**
+     * Plays one of the costume's clips by name, holding it until
+     * {@link #clearMonsterAnimation(Player, UUID, MonsterCostume)}.
+     *
+     * <p>By name rather than by enum because the clip sets differ: the GMOD entity alone has 28, of
+     * which six map onto Lectern's shared names and the rest only exist on that rig.
+     *
+     * @param cameraViewer a player whose camera the monster's own camera track takes over for the
+     *     length of the clip, or null to leave every camera alone
+     */
+    default void playMonsterClip(Player player, UUID entityUuid, MonsterCostume costume, String clip,
+                                 UUID cameraViewer) {
+    }
+
+    /** As {@link #playMonsterClip(Player, UUID, MonsterCostume, String, UUID)}, taking nobody's camera. */
+    default void playMonsterClip(Player player, UUID entityUuid, MonsterCostume costume, String clip) {
+        playMonsterClip(player, entityUuid, costume, clip, null);
+    }
+
+    /** Releases a held clip and lets locomotion take the model back. */
+    default void clearMonsterAnimation(Player player, UUID entityUuid, MonsterCostume costume) {
+    }
+
+    /** Renders a victim in the monster's hands. */
+    default void monsterGrab(Player player, UUID entityUuid, MonsterCostume costume, UUID victim) {
+    }
+
+    /** Lets go of whoever the monster was holding. */
+    default void monsterRelease(Player player, UUID entityUuid, MonsterCostume costume) {
+    }
+
     // --- Verity Monster ---
 
     /**
