@@ -81,6 +81,15 @@ public interface IEnvironmentManager {
     /**
      * As {@link #setFlashlight(Player, boolean)}, with the beam tuned.
      *
+     * @deprecated The client owns the shape of the beam and ignores these. It draws every beam in
+     *     the room itself, per pixel, rather than through a shader pack, and the shape is a
+     *     judgement about how a room feels that can only be made while looking at one: it is tuned
+     *     in game with {@code /lecternc flashlight tune} and the values that come out of that are
+     *     what ships. A server sending its own guess pulled it back out of shape, and did it
+     *     differently on each server. Still sent and still harmless, so callers keep linking; the
+     *     values are read off the packet and dropped. Use
+     *     {@link #setFlashlight(Player, FlashlightMode)} instead.
+     *
      * @param range how far the beam reaches before it fades out, in blocks
      * @param strength overall power of the beam
      * @param volumetric how visible the beam is hanging in the air, 0.0 for clean air
@@ -88,6 +97,7 @@ public interface IEnvironmentManager {
      * @param green green component of the beam colour (0-255)
      * @param blue blue component of the beam colour (0-255)
      */
+    @Deprecated
     default void setFlashlight(Player player, boolean enabled, float range, float strength,
                                float volumetric, int red, int green, int blue) {
     }
@@ -101,7 +111,12 @@ public interface IEnvironmentManager {
 
     /**
      * As {@link #setFlashlight(Player, FlashlightMode)}, with the beam tuned.
+     *
+     * @deprecated The client owns the shape and ignores these, for the reasons given on
+     *     {@link #setFlashlight(Player, boolean, float, float, float, int, int, int)}. Use
+     *     {@link #setFlashlight(Player, FlashlightMode)} instead.
      */
+    @Deprecated
     default void setFlashlight(Player player, FlashlightMode mode, float range, float strength,
                                float volumetric, int red, int green, int blue) {
     }
