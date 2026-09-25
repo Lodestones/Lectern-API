@@ -78,6 +78,32 @@ public interface IScreenManager {
     void stopForceShader(Player player);
 
     /**
+     * Plays the Backrooms intro on the player's client: a pause on black, a long fall with the
+     * camera rolling, then a landing. It runs about 17 seconds and takes the screen with it, hiding
+     * the HUD and locking movement, chat, inventory and the player list for the duration.
+     *
+     * <p>The client ends it by itself and says nothing when it does, so a caller that needs to act
+     * on the landing (moving the player while the screen is black, say) works off its own clock.
+     * Nothing is re-sent on a relog: someone who reconnects mid-fall comes back to an ordinary
+     * screen rather than the middle of a cutscene.
+     *
+     * @param player the target player
+     */
+    default void startBackroomsCutscene(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Cuts the Backrooms intro short, handing back the camera, the HUD and the keys. Safe to call
+     * when nothing is playing.
+     *
+     * @param player the target player
+     */
+    default void stopBackroomsCutscene(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
      * Enables the motion blur effect with the specified intensity.
      *
      * @param player the target player
