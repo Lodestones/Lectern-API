@@ -221,6 +221,21 @@ public interface ICameraManager {
     }
 
     /**
+     * Sets how much harder the view bobs at a full run.
+     *
+     * <p>The bob grows with how fast the player is actually moving rather than with the sprint key,
+     * so a boosted sprint bobs harder than a vanilla one. It lands on the camera only: the held
+     * item is left alone, and the client's own "Bob View" setting does not switch it off while the
+     * sway is running.
+     *
+     * @param player the target player
+     * @param factor the multiplier at full speed; 1.0 leaves vanilla's bob as it is
+     */
+    default void setCameraSwayBob(Player player, float factor) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
      * Stops the movement sway and puts the camera back on vanilla rails.
      */
     default void stopCameraSway(Player player) {
