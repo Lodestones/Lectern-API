@@ -1,5 +1,6 @@
 package gg.lode.lecternapi.api.manager;
 
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -44,6 +45,25 @@ public interface IAudioManager {
 
     /** Lets {@code viewer} hear everybody's footsteps again. */
     default void clearMutedFootsteps(Player viewer) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Stops a sound by fading it out instead of cutting it off. Every copy of {@code soundId}
+     * playing for the player right now comes down to silence over {@code fadeMillis}, then stops.
+     *
+     * @param player     the player whose sound fades
+     * @param soundId    the sound, e.g. {@code "minecraft:music.game"}; empty or null for every sound
+     * @param fadeMillis how long the fade takes; 0 stops it at once
+     */
+    default void fadeOutSound(Player player, String soundId, int fadeMillis) {
+        fadeOutSound(player, soundId, null, fadeMillis);
+    }
+
+    /**
+     * The same, only for copies playing in {@code category}; null for any category.
+     */
+    default void fadeOutSound(Player player, String soundId, SoundCategory category, int fadeMillis) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 }
