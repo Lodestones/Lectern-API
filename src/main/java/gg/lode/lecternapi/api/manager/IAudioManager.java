@@ -2,6 +2,8 @@ package gg.lode.lecternapi.api.manager;
 
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * Manages audio effects for players running the Lectern client mod.
  * Controls global sound playback and block-break sounds.
@@ -22,4 +24,26 @@ public interface IAudioManager {
      * Enables or disables the block-break sound effect override.
      */
     void setBlockSound(Player player, boolean enabled);
+
+    /**
+     * Stops {@code viewer} hearing {@code target}'s footsteps. Nothing else about the target goes
+     * quiet, and nobody else is affected: a monster can creep up on its victims silently while
+     * everyone watching still hears it.
+     *
+     * @param viewer the player who stops hearing them
+     * @param target the player whose footsteps go silent
+     */
+    default void muteFootsteps(Player viewer, UUID target) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Lets {@code viewer} hear {@code target}'s footsteps again. */
+    default void unmuteFootsteps(Player viewer, UUID target) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Lets {@code viewer} hear everybody's footsteps again. */
+    default void clearMutedFootsteps(Player viewer) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }
