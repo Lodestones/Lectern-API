@@ -229,7 +229,8 @@ public interface ICameraManager {
      * sway is running.
      *
      * @param player the target player
-     * @param factor the multiplier at full speed; 1.0 leaves vanilla's bob as it is
+     * @param factor the multiplier at full speed; 1.0 leaves vanilla's bob as it is, and 0 takes the
+     *               bob away entirely, including the one the client's own setting would have given
      */
     default void setCameraSwayBob(Player player, float factor) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
