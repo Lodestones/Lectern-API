@@ -198,4 +198,43 @@ public interface IEmoteManager {
     /** Closes the wheel and forgets its slots. */
     default void clearEmoteWheel(Player player) {
     }
+
+    // --- Emote camera ---
+
+    /**
+     * Rides the player's own camera on the animation they are playing.
+     *
+     * <p>An emote moves the model and nothing else, which is right for a wave and wrong for a pose
+     * somebody is held in. A player crawling on their face is drawn on the floor and still sees the
+     * room from standing height. With this on, the animation's head is where they look from.
+     *
+     * <p>Looking around still works: the pose is added to where they are already looking rather than
+     * replacing it. Turn it off when the pose ends, or the camera keeps wearing the last frame of it.
+     *
+     * <p>A client too old to know about this ignores it and leaves the camera where it has always
+     * been, which is the behaviour every emote had before.
+     *
+     * @param player   the player whose camera follows their animation
+     * @param attached whether the camera follows it
+     */
+    default void setEmoteCamera(Player player, boolean attached) {
+        setEmoteCamera(player, attached, 0.0f, 0.12f, 0.0f);
+    }
+
+    /**
+     * The same, saying where the eyes sit inside the head.
+     *
+     * <p>In blocks, in the head's own frame: x right, y up, z forward. It rides the animation, so a
+     * head face down on the floor takes its eyes down with it, and the numbers stay meaningful
+     * whatever the pose is doing.
+     *
+     * <p>The default is the step from the base of the neck up to eye level, which is where a
+     * standing player's view sits. Move it for a pose authored with the face somewhere unhelpful.
+     *
+     * @param offsetX right of the head's centre, negative for left
+     * @param offsetY above the neck, negative for below
+     * @param offsetZ out of the face, negative for back into the skull
+     */
+    default void setEmoteCamera(Player player, boolean attached, float offsetX, float offsetY, float offsetZ) {
+    }
 }
