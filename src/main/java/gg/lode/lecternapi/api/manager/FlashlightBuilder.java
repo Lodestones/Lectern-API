@@ -49,6 +49,7 @@ public final class FlashlightBuilder {
     private int red = -1;
     private int green = -1;
     private int blue = -1;
+    private Boolean selfOnly;
 
     public FlashlightBuilder(IEnvironmentManager environment, Player player) {
         this.environment = environment;
@@ -105,8 +106,22 @@ public final class FlashlightBuilder {
         return colour(red, green, blue);
     }
 
+    /**
+     * Whether the carrier is the only one who sees this beam.
+     *
+     * <p>Left alone it keeps whatever the carrier was last set to, so a beam does not quietly become
+     * public again every time something adjusts its range.
+     */
+    public FlashlightBuilder selfOnly(boolean selfOnly) {
+        this.selfOnly = selfOnly;
+        return this;
+    }
+
     /** Sends it. Nothing reaches the player until this is called. */
     public void send() {
+        // Before the beam itself: the holders list goes out with the beam, and setting it after
+        // would publish one frame of a beam that is meant to be private.
+        if (selfOnly != null) environment.setFlashlightSelfOnly(player, selfOnly);
         environment.setFlashlight(player, mode, range, strength, volumetric, red, green, blue);
     }
 }

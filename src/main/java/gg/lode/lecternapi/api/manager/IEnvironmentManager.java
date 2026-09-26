@@ -124,6 +124,40 @@ public interface IEnvironmentManager {
         return new FlashlightBuilder(this, player);
     }
 
+    /**
+     * Keeps a player's beam to themselves.
+     *
+     * <p>Every client draws the beams of everybody it can see, which is what makes them smooth and
+     * what makes them public: a carrier is lit up to the whole room from further away than they can
+     * see. This says the carrier is the only one who gets to see theirs. The beam is unchanged for
+     * them; to everybody else they are simply not holding one.
+     *
+     * <p>For anything that has to look without being looked at — something hunting in the dark, a
+     * spectator following a match, a player briefly out of the world's reckoning.
+     *
+     * @param player the carrier
+     * @param selfOnly true to hide their beam from every other player
+     */
+    default void setFlashlightSelfOnly(Player player, boolean selfOnly) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Whether this player's beam is theirs alone. */
+    default boolean isFlashlightSelfOnly(Player player) {
+        return false;
+    }
+
+    /**
+     * Hides one carrier's beam from one viewer, or shows it again.
+     *
+     * <p>The finer-grained half of {@link #setFlashlightSelfOnly(Player, boolean)}, for a beam that
+     * some of the room should see and some should not. Both apply: a carrier who is self-only is
+     * hidden from everybody whatever this says.
+     */
+    default void setFlashlightHiddenFrom(Player player, Player viewer, boolean hidden) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
     /** Whether this player is currently carrying a flashlight. */
     default boolean hasFlashlight(Player player) {
         return false;
