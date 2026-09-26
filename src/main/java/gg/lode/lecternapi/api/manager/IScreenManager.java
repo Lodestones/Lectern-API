@@ -1,5 +1,6 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.ui.EyeVignette;
 import gg.lode.lecternapi.api.prompt.ModalPromptButton;
 import org.bukkit.entity.Player;
 
@@ -481,6 +482,29 @@ public interface IScreenManager {
      * @param offHand  true to hide the off hand
      */
     default void setHiddenHands(Player player, boolean mainHand, boolean offHand) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Shows the player the world through an eye, eased in from whatever they had over
+     * {@code transitionMillis}. Starting from nothing, the eye opens out of a clear screen, so
+     * closing it in reads as the world narrowing rather than popping on.
+     *
+     * @param player           the target player
+     * @param eye              the eye to ease to
+     * @param transitionMillis how long the change takes; 0 is instant
+     */
+    default void setEyeVignette(Player player, EyeVignette eye, int transitionMillis) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Opens the eye all the way and fades it out over {@code transitionMillis}, then switches it off.
+     *
+     * @param player           the target player
+     * @param transitionMillis how long the fade takes; 0 is instant
+     */
+    default void clearEyeVignette(Player player, int transitionMillis) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 }
