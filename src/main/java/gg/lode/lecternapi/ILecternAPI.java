@@ -106,4 +106,9 @@ public interface ILecternAPI {
     default ITabListManager getTabListManager() {
         return new ITabListManager() {};
     }
+
+    /** Authored geometry hung on an entity, shown to everybody or to one player. */
+    default IPropManager getPropManager() {
+        return new IPropManager() {};
+    }
 }
