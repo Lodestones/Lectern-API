@@ -84,6 +84,29 @@ public interface IShapeshiftManager {
      */
     void clearShapeshifts(Player viewer);
 
+    /**
+     * Plays one of the disguise's own animations on the viewer's client.
+     *
+     * <p>A disguise animates itself for everything its mob decides on its own: walking, flying,
+     * flopping, swinging. What it cannot work out is anything the real mob only does because its AI
+     * chose to, since a disguise has no AI. A warden's sonic boom is the case this exists for: the
+     * charge is a second and a half of windup that has to start before the boom lands, and nothing
+     * the client can see about the player says it is coming.
+     *
+     * <p>Named rather than enumerated so a new animation does not need another method on this
+     * interface, which on this project means another loader. An animation the client does not know
+     * is ignored.
+     *
+     * <p>A no-op fallback so a consumer built against this interface still links against an older
+     * implementation; the real implementation overrides it.
+     *
+     * @param viewer the player whose client should play it
+     * @param targetUuid the disguised entity
+     * @param animation the animation's name, for example {@code warden_sonic_charge}
+     */
+    default void shapeshiftAnimation(Player viewer, UUID targetUuid, String animation) {
+    }
+
     // --- Block Shapeshift (entity-to-block disguise) ---
 
     /**
