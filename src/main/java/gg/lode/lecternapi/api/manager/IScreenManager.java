@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /**
  * Manages screen-level effects for players running the Lectern client mod.
- * Controls flash overlays, shaders, xray, and prevent-disconnect.
+ * Controls flash overlays, shaders, and screen-space effects.
  */
 public interface IScreenManager {
 
@@ -30,36 +30,6 @@ public interface IScreenManager {
     void flash(Player player, int red, int green, int blue, int alpha, int layer, float durationIn, float durationStay, float durationOut);
 
     /**
-     * Enables or disables the xray effect on the player's client.
-     *
-     * @param player the target player
-     * @param enabled whether to enable xray
-     * @param range the render range in blocks (only used when enabling)
-     */
-    void setXray(Player player, boolean enabled, int range);
-
-    /**
-     * Adds a block type to the xray highlight list.
-     *
-     * @param player the target player
-     * @param material the block identifier (e.g. "minecraft:iron_ore")
-     * @param red red highlight color (0-255)
-     * @param green green highlight color (0-255)
-     * @param blue blue highlight color (0-255)
-     */
-    void addXrayBlock(Player player, String material, int red, int green, int blue);
-
-    /**
-     * Removes a block type from the xray highlight list.
-     */
-    void removeXrayBlock(Player player, String material);
-
-    /**
-     * Prevents the player from disconnecting or opening the pause menu.
-     */
-    void setPreventDisconnect(Player player, boolean enabled);
-
-    /**
      * Forces a shader pack on the player's client. The shader pack must be available
      * as a ZIP file at {@code assets/lectern/shader-templates/<shaderName>.zip}, either
      * bundled in the Lectern mod or provided via a server resource pack.
@@ -77,32 +47,6 @@ public interface IScreenManager {
      * @param player the target player
      */
     void stopForceShader(Player player);
-
-    /**
-     * Plays the Backrooms intro on the player's client: a pause on black, a long fall with the
-     * camera rolling, then a landing. It runs about 17 seconds and takes the screen with it, hiding
-     * the HUD and locking movement, chat, inventory and the player list for the duration.
-     *
-     * <p>The client ends it by itself and says nothing when it does, so a caller that needs to act
-     * on the landing (moving the player while the screen is black, say) works off its own clock.
-     * Nothing is re-sent on a relog: someone who reconnects mid-fall comes back to an ordinary
-     * screen rather than the middle of a cutscene.
-     *
-     * @param player the target player
-     */
-    default void startBackroomsCutscene(Player player) {
-        // Backward-compatible no-op fallback; the real implementation overrides this.
-    }
-
-    /**
-     * Cuts the Backrooms intro short, handing back the camera, the HUD and the keys. Safe to call
-     * when nothing is playing.
-     *
-     * @param player the target player
-     */
-    default void stopBackroomsCutscene(Player player) {
-        // Backward-compatible no-op fallback; the real implementation overrides this.
-    }
 
     /**
      * Enables the motion blur effect with the specified intensity.
@@ -169,45 +113,6 @@ public interface IScreenManager {
      * @param viewer the player whose swap effects should be cleared
      */
     void clearSwapHands(Player viewer);
-
-    /**
-     * Requests a screenshot from the player's client.
-     *
-     * <p>The player is told. Every capture flashes a red vignette across their screen, and
-     * nothing in the request can shorten, dim or suppress it — a picture taken quietly is what
-     * Lectern's privacy notice promises cannot happen, so the indicator is part of taking it
-     * rather than a setting. Say so in your own rules if you use this.
-     *
-     * <p>The image is captured after the frame is composited, downscaled, encoded as JPEG and
-     * uploaded off the game channel; a {@link gg.lode.lecternapi.api.event.ClientScreenshotEvent}
-     * is fired with the saved file once it has been pulled back. Nothing arrives if the player's
-     * client is offline-mode or the upload fails.
-     *
-     * @param player the target player
-     */
-    void requestScreenshot(Player player);
-
-    /**
-     * Asks a player's client what it has installed.
-     *
-     * <p>The client answers with three events — {@link gg.lode.lecternapi.api.event.ClientModsReportEvent}
-     * for its Fabric mods, {@link gg.lode.lecternapi.api.event.ClientPacksReportEvent} for its
-     * enabled and disabled resource packs, and {@link gg.lode.lecternapi.api.event.ClientInstallIdEvent}
-     * for the id of the installation itself — and, if any of its mods matches a blocked client, a
-     * {@code BAD_MOD} report as well.
-     *
-     * <p>Nothing is sent unless you ask. Until 3.4 the client volunteered both lists on every
-     * join, so a server received them whether or not it had any use for them; now a server that
-     * never calls this never learns what a player has installed. That makes the disclosure a
-     * property of the server the player chose to connect to rather than of having Lectern
-     * installed, which is the honest place for it to sit — and it means a server that does ask
-     * should say so in its own rules.
-     *
-     * <p>Safe to call more than once; each call produces a fresh report.
-     *
-     * @param player the player to ask
-     */
-    void requestClientReport(Player player);
 
     /**
      * Displays the player's hand held out with an item floating and spinning above it.

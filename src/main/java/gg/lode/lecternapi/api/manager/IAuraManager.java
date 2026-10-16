@@ -8,7 +8,7 @@ import java.util.UUID;
  * Manages aura effects for players running the Lectern client mod.
  * Provides three aura types:
  *
- * <p><b>Chronite Aura:</b> A totem-style particle burst with orbiting rings
+ * <p><b>Time Aura:</b> A totem-style particle burst with orbiting rings
  * and converging spark particles. Configurable color. Plays on a target entity for ~2 seconds.</p>
  *
  * <p><b>Shockwave Aura:</b> An expanding shockwave ring at a world position with
@@ -19,10 +19,10 @@ import java.util.UUID;
  */
 public interface IAuraManager {
 
-    // --- Chronite Aura (totem-style) ---
+    // --- Time Aura (totem-style) ---
 
     /**
-     * Plays the chronite aura effect on a target entity as seen by the viewer.
+     * Plays the time aura effect on a target entity as seen by the viewer.
      * The effect renders orbiting rings around the target with
      * converging spark particles, lasting approximately 2 seconds.
      *
@@ -32,27 +32,45 @@ public interface IAuraManager {
      * @param green  green color component (0-255)
      * @param blue   blue color component (0-255)
      */
-    void playChroniteAura(Player viewer, UUID target, int red, int green, int blue);
+    void playTimeAura(Player viewer, UUID target, int red, int green, int blue);
 
     /**
-     * Stops the chronite aura on a target entity.
+     * Stops the time aura on a target entity.
      *
      * @param viewer the player whose client will stop rendering the effect
      * @param target the UUID of the entity
      */
-    void stopChroniteAura(Player viewer, UUID target);
+    void stopTimeAura(Player viewer, UUID target);
 
     /**
-     * Clears all chronite aura effects on the viewer's client.
+     * Clears all time aura effects on the viewer's client.
      *
      * @param viewer the player whose effects should be cleared
      */
-    void clearChroniteAuras(Player viewer);
+    void clearTimeAuras(Player viewer);
 
-    // --- Chronite Aura Swirl (double-helix travelling between two points) ---
+    /** @deprecated Renamed to {@link #playTimeAura(Player, UUID, int, int, int)}. */
+    @Deprecated
+    default void playChroniteAura(Player viewer, UUID target, int red, int green, int blue) {
+        playTimeAura(viewer, target, red, green, blue);
+    }
+
+    /** @deprecated Renamed to {@link #stopTimeAura(Player, UUID)}. */
+    @Deprecated
+    default void stopChroniteAura(Player viewer, UUID target) {
+        stopTimeAura(viewer, target);
+    }
+
+    /** @deprecated Renamed to {@link #clearTimeAuras(Player)}. */
+    @Deprecated
+    default void clearChroniteAuras(Player viewer) {
+        clearTimeAuras(viewer);
+    }
+
+    // --- Time Swirl (double-helix travelling between two points) ---
 
     /**
-     * Plays a chronite swirl: two line strands spiral (double helix) along the axis from an
+     * Plays a time swirl: two line strands spiral (double helix) along the axis from an
      * initial world position to a target world position, extending toward the target over the
      * given duration, then fading out.
      *
@@ -73,30 +91,52 @@ public interface IAuraManager {
      * @param coilLength      length of the coil in blocks; 0 (or larger than the path) fills the
      *                        whole travelled path, a smaller value trails a fixed-length coil behind the tip
      */
-    default void playChroniteSwirl(Player player, String id, float x1, float y1, float z1,
-                           float x2, float y2, float z2,
-                           int red, int green, int blue, float durationSeconds, float radius,
-                           float thickness, float coilLength) {
+    default void playTimeSwirl(Player player, String id, float x1, float y1, float z1,
+                               float x2, float y2, float z2,
+                               int red, int green, int blue, float durationSeconds, float radius,
+                               float thickness, float coilLength) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 
     /**
-     * Stops a chronite swirl by its identifier.
+     * Stops a time swirl by its identifier.
      *
      * @param player the target player
      * @param id     the swirl identifier
      */
-    default void stopChroniteSwirl(Player player, String id) {
+    default void stopTimeSwirl(Player player, String id) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
 
     /**
-     * Clears all chronite swirl effects on the target player's client.
+     * Clears all time swirl effects on the target player's client.
      *
      * @param player the target player
      */
-    default void clearChroniteSwirls(Player player) {
+    default void clearTimeSwirls(Player player) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** @deprecated Renamed to {@link #playTimeSwirl}. */
+    @Deprecated
+    default void playChroniteSwirl(Player player, String id, float x1, float y1, float z1,
+                                   float x2, float y2, float z2,
+                                   int red, int green, int blue, float durationSeconds, float radius,
+                                   float thickness, float coilLength) {
+        playTimeSwirl(player, id, x1, y1, z1, x2, y2, z2, red, green, blue, durationSeconds, radius,
+                thickness, coilLength);
+    }
+
+    /** @deprecated Renamed to {@link #stopTimeSwirl(Player, String)}. */
+    @Deprecated
+    default void stopChroniteSwirl(Player player, String id) {
+        stopTimeSwirl(player, id);
+    }
+
+    /** @deprecated Renamed to {@link #clearTimeSwirls(Player)}. */
+    @Deprecated
+    default void clearChroniteSwirls(Player player) {
+        clearTimeSwirls(player);
     }
 
     // --- Shockwave Aura (expanding ring) ---

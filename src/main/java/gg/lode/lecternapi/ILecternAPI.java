@@ -48,14 +48,6 @@ public interface ILecternAPI {
 
     IInputManager getInputManager();
 
-    /** Raw input reporting for anti-cheat consumers. Off for every player by default. */
-    /**
-     * @deprecated Input telemetry was removed from the client. The manager returned still
-     *             answers, and does nothing.
-     */
-    @Deprecated
-    IInputTelemetryManager getInputTelemetryManager();
-
     IScreenManager getScreenManager();
 
     IPacketMenuManager getPacketMenuManager();
@@ -98,8 +90,6 @@ public interface ILecternAPI {
 
     IShapeshiftManager getShapeshiftManager();
 
-    ISharedControlManager getSharedControlManager();
-
     INicknameManager getNicknameManager();
 
     /** Per-viewer tab-list prefixes, suffixes and sorting. */
@@ -107,8 +97,4 @@ public interface ILecternAPI {
         return new ITabListManager() {};
     }
 
-    /** Authored geometry hung on an entity, shown to everybody or to one player. */
-    default IPropManager getPropManager() {
-        return new IPropManager() {};
-    }
 }
