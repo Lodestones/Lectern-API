@@ -515,6 +515,24 @@ public interface IHUDManager {
     void clearLayoutVariables(Player player);
 
     /**
+     * Draws this player's GUI layouts the vanilla way (display entities) even though they have the
+     * mod, or goes back to the mod. For checking how a page looks to a client without it.
+     *
+     * <p>Switching on takes every layout off the mod; switching off takes the vanilla screen down.
+     * Neither replays anything, so whoever opened the pages opens them again after switching.
+     *
+     * @return whether it took: false when the server cannot draw vanilla screens
+     */
+    default boolean setVanillaRendering(Player player, boolean vanilla) {
+        return false;
+    }
+
+    /** Whether {@link #setVanillaRendering} has this player on the vanilla screen. */
+    default boolean isVanillaRendering(Player player) {
+        return false;
+    }
+
+    /**
      * Takes down one badge slot by id, leaving the rest of the stack up.
      *
      * @deprecated Badges are retired; this does nothing. See {@link #showBadge}.

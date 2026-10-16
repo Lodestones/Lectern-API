@@ -24,6 +24,7 @@ public class LayoutInteractEvent extends LecternClientEvent implements Cancellab
     private final String elementRef;
     private final LayoutAction.Trigger trigger;
     private boolean cancelled;
+    private boolean successful = true;
 
     public LayoutInteractEvent(Player player, String pageId, String elementRef,
                                LayoutAction.Trigger trigger) {
@@ -45,6 +46,22 @@ public class LayoutInteractEvent extends LecternClientEvent implements Cancellab
 
     public LayoutAction.Trigger getTrigger() {
         return trigger;
+    }
+
+    /**
+     * Whether the interaction did anything. True unless a listener says otherwise.
+     *
+     * <p>Actions flagged {@link LayoutAction#onSuccess()} are skipped when this is false, so a
+     * button that opens a tab already open, or one the player can't use, doesn't play its click
+     * sound. Unlike cancelling, every other action still runs.
+     */
+    public boolean isSuccessful() {
+        return successful;
+    }
+
+    /** Marks the interaction as one that did nothing. See {@link #isSuccessful()}. */
+    public void setSuccessful(boolean successful) {
+        this.successful = successful;
     }
 
     @Override

@@ -18,8 +18,10 @@ import java.util.Locale;
  * @param trigger what has to happen for it to fire
  * @param type    what to do
  * @param value   the argument for {@code type} — a command, a sound key, a destination
+ * @param onSuccess only run when the interaction did something; see
+ *                  {@code LayoutInteractEvent.setSuccessful}
  */
-public record LayoutAction(String element, Trigger trigger, Type type, String value) {
+public record LayoutAction(String element, Trigger trigger, Type type, String value, boolean onSuccess) {
 
     /** What has to happen for an action to fire. */
     public enum Trigger {
@@ -107,6 +109,11 @@ public record LayoutAction(String element, Trigger trigger, Type type, String va
     }
 
     /** Whether this action belongs to the layout rather than to a single element. */
+    /** Runs whether or not the interaction did anything, as every action did before the flag. */
+    public LayoutAction(String element, Trigger trigger, Type type, String value) {
+        this(element, trigger, type, value, false);
+    }
+
     public boolean isLayoutScoped() {
         return element.isEmpty();
     }
