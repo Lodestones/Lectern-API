@@ -14,9 +14,24 @@ before_install:
       fi
       echo "candidate $candidate unavailable, trying next"
     done
+  # Central answers JitPack's shared builders with 429 Too Many Requests, so
+  # fetch through Google's mirror of it instead.
+  - |
+    mkdir -p "$HOME/.m2"
+    cat > "$HOME/.m2/settings.xml" <<'XML'
+    <settings>
+      <mirrors>
+        <mirror>
+          <id>google-central</id>
+          <mirrorOf>central</mirrorOf>
+          <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
+        </mirror>
+      </mirrors>
+    </settings>
+    XML
 
 # Named outright: without it JitPack guesses, and when its first guess fails
 # (v1.1.70 hit a 429 from Central resolving plugins) it falls back to a
-# ./mvnw this repo does not have. Retried once, since a 429 is transient.
+# ./mvnw this repo does not have. Retried once in case a fetch still fails.
 install:
   - mvn -B -ntp clean install -DskipTests || (sleep 30 && mvn -B -ntp clean install -DskipTests)
