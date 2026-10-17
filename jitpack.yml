@@ -30,8 +30,21 @@ before_install:
     </settings>
     XML
 
-# Named outright: without it JitPack guesses, and when its first guess fails
-# (v1.1.70 hit a 429 from Central resolving plugins) it falls back to a
+# JitPack's builders carry different Maven versions, and some are older than
+# the 3.6.3 maven-shade-plugin 3.6.0 needs (v1.1.72 failed on one). Install a
+# known Maven too, and run it by path so the image's own mvn is never picked.
+# Named outright as well: without it JitPack guesses, and falls back to a
 # ./mvnw this repo does not have. Retried once in case a fetch still fails.
 install:
-  - mvn -B -ntp clean install -DskipTests || (sleep 30 && mvn -B -ntp clean install -DskipTests)
+  - |
+    sdk install maven 3.9.9 < /dev/null || true
+    MVN="$HOME/.sdkman/candidates/maven/3.9.9/bin/mvn"
+    [ -x "$MVN" ] || MVN=mvn
+    for jdk in 21.0.7-tem 21.0.5-tem 21.0.2-tem 21-open 21.0.2-open; do
+      if [ -d "$HOME/.sdkman/candidates/java/$jdk" ]; then
+        export JAVA_HOME="$HOME/.sdkman/candidates/java/$jdk"
+        break
+      fi
+    done
+    "$MVN" -v
+    "$MVN" -B -ntp clean install -DskipTests || (sleep 30 && "$MVN" -B -ntp clean install -DskipTests)
