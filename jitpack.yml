@@ -1,0 +1,22 @@
+# JitPack's `jdk:` shorthand resolves to an sdkman candidate that can no
+# longer be downloaded, and the build then silently continues on the image's
+# default Java. So install a Java 21 explicitly, trying candidates until one
+# resolves (same as Bookshelf-API).
+before_install:
+  - |
+    for candidate in 21.0.7-tem 21.0.5-tem 21.0.2-tem 21-open 21.0.2-open; do
+      if sdk install java "$candidate" < /dev/null; then
+        sdk use java "$candidate"
+        export JAVA_HOME="$HOME/.sdkman/candidates/java/$candidate"
+        echo "Using JAVA_HOME=$JAVA_HOME"
+        java -version
+        break
+      fi
+      echo "candidate $candidate unavailable, trying next"
+    done
+
+# Named outright: without it JitPack guesses, and when its first guess fails
+# (v1.1.70 hit a 429 from Central resolving plugins) it falls back to a
+# ./mvnw this repo does not have. Retried once, since a 429 is transient.
+install:
+  - mvn -B -ntp clean install -DskipTests || (sleep 30 && mvn -B -ntp clean install -DskipTests)
