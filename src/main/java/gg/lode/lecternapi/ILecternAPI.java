@@ -48,6 +48,7 @@ public interface ILecternAPI {
 
     IInputManager getInputManager();
 
+
     IScreenManager getScreenManager();
 
     IPacketMenuManager getPacketMenuManager();
@@ -90,6 +91,8 @@ public interface ILecternAPI {
 
     IShapeshiftManager getShapeshiftManager();
 
+    ISharedControlManager getSharedControlManager();
+
     INicknameManager getNicknameManager();
 
     /** Per-viewer tab-list prefixes, suffixes and sorting. */
@@ -97,4 +100,8 @@ public interface ILecternAPI {
         return new ITabListManager() {};
     }
 
+    /** Authored geometry hung on an entity, shown to everybody or to one player. */
+    default IPropManager getPropManager() {
+        return new IPropManager() {};
+    }
 }

@@ -1,5 +1,10 @@
 package gg.lode.lecternapi.api.manager;
 
+import gg.lode.lecternapi.api.data.MonsterCostume;
+import gg.lode.lecternapi.api.verity.VerityClip;
+import gg.lode.lecternapi.api.verity.VerityFace;
+import gg.lode.lecternapi.api.verity.VerityFit;
+import gg.lode.lecternapi.api.verity.VerityModel;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -8,7 +13,8 @@ import java.util.UUID;
 /**
  * Manages entity-related effects for players running the Lectern client mod.
  * Controls custom capes, skins, nametags, entity tinting, visibility, emotes, model attachments,
- * and disintegration.
+ * disintegration, the Verity model replacement, the Verity monster costume, and player
+ * ragdolls.
  */
 public interface IEntityManager {
 
@@ -241,6 +247,17 @@ public interface IEntityManager {
      */
     void clearAttachments(Player player);
 
+    // --- Visual Chain ---
+
+    /**
+     * Enables or disables the visual chain leash effect on the target player's client.
+     * When enabled, leash connections render as chain blocks instead of the default leash rope.
+     *
+     * @param player the target player
+     * @param enabled true to enable chain rendering, false to disable
+     */
+    void setVisualChain(Player player, boolean enabled);
+
     // --- Disintegration ---
 
     /**
@@ -287,4 +304,418 @@ public interface IEntityManager {
      * the target player's client.
      */
     void stopDisintegrate(Player player, UUID entityUuid);
+
+    // --- Verity Model ---
+
+    /**
+     * Replaces an entity's rendering with the Verity model on the target player's client:
+     * a face-textured sphere (or the cardboard box it ships in) drawn in place of the
+     * entity's own model.
+     * <p>
+     * The effect is purely visual — the entity keeps its real model server-side and its
+     * hitbox, movement and AI are untouched. The client drives the animation off the
+     * entity's own motion: the ball rolls as it travels and unwinds when it stops, squashes
+     * on landing, and turns to face wherever the entity is looking. It is also kept out of
+     * block geometry so it doesn't sink through floors or clip into walls.
+     * <p>
+     * Re-applying to an entity that already wears the model retunes it in place rather than
+     * restarting it, so the drop-in intro doesn't replay.
+     *
+     * @param player the player who will see the model
+     * @param entityUuid the UUID of the entity to replace
+     * @param model which model to wear
+     * @param face the face state to start on
+     * @param fit how the ball is sized against the entity's hitbox
+     * @param scale multiplier on the size the fit produces; {@code <= 0} falls back to 1
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityModel(Player player, UUID entityUuid, VerityModel model, VerityFace face, VerityFit fit, float scale, int hue) {
+        setVerityModel(player, entityUuid, model, face, fit, scale, hue, true);
+    }
+
+    /**
+     * Applies the Verity model, optionally without its drop-in intro.
+     *
+     * @param playIntro whether the ball drops in and settles when it first appears. Pass
+     *                  false to have it simply be there — for a model applied out of sight,
+     *                  or mid-scene where a ball dropping from above would give it away.
+     *                  Has no effect when the entity already wears the model, since
+     *                  re-applying never replays the intro.
+     */
+    default void setVerityModel(Player player, UUID entityUuid, VerityModel model, VerityFace face, VerityFit fit, float scale, int hue, boolean playIntro) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Applies the Verity ball with default sizing (hitbox width), no tint and a happy face.
+     */
+    default void setVerityModel(Player player, UUID entityUuid, VerityFace face) {
+        setVerityModel(player, entityUuid, VerityModel.BALL, face, VerityFit.DEFAULT, 1.0f, 0);
+    }
+
+    /**
+     * Removes the Verity model from an entity, restoring its normal rendering.
+     */
+    default void removeVerityModel(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Clears every Verity model on the target player's client.
+     */
+    default void clearVerityModels(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Switches which model an entity wears without restarting its animation state.
+     */
+    default void setVerityModelType(Player player, UUID entityUuid, VerityModel model) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Changes the face an entity's ball is wearing.
+     */
+    default void setVerityFace(Player player, UUID entityUuid, VerityFace face) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Changes how the ball is sized against the entity's hitbox.
+     */
+    default void setVerityFit(Player player, UUID entityUuid, VerityFit fit) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Flags the ball as talking, which swaps in the current face's talking texture and
+     * starts a continuous squash/stretch pulse. Stays on until switched back off.
+     */
+    default void setVerityTalking(Player player, UUID entityUuid, boolean talking) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Rescales the ball. Multiplies whatever size the current fit produces.
+     *
+     * @param scale size multiplier; values {@code <= 0} are ignored
+     */
+    default void setVerityScale(Player player, UUID entityUuid, float scale) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Tints the ball.
+     *
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue
+     */
+    default void setVerityHue(Player player, UUID entityUuid, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Toggles the collision constraint that keeps the ball out of block geometry.
+     * On by default; turn it off if you want the ball to pass through the world.
+     */
+    default void setVerityPhysics(Player player, UUID entityUuid, boolean physics) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Replays the ball's drop-and-settle intro.
+     */
+    default void playVerityBounce(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Plays the box's lid-open animation: the flaps swing apart and the box launches
+     * upward and shrinks away. No-op unless the entity is wearing {@link VerityModel#BOX}.
+     */
+    default void playVerityBoxOpen(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Controls whether items tagged for the Verity model render as the ball on this
+     * player's client, and what tint they get.
+     * <p>
+     * An item opts in through its custom data — {@code {"lodestone:verity":"<face>"}} —
+     * and then renders as a ball in hand, in third person, on the ground and in the
+     * inventory. This toggle is a client-wide override for that behaviour; it is on by
+     * default, since the tag itself is already opt-in.
+     *
+     * @param enabled whether tagged items render as the ball
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityItemModels(Player player, boolean enabled, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+    // --- Monsters ---
+
+    /**
+     * Replaces an entity's rendering with a monster on the target player's client — a fully animated
+     * character model drawn in place of the entity's own.
+     *
+     * <p>Purely visual: the entity keeps its real model server-side and its AI and movement are
+     * untouched. The client animates it from the entity's own motion, cross-fading idle, walk and run
+     * by speed and driving the stride from ground covered rather than from the clock, so it stays in
+     * step at any size or movement speed. Its hitbox and eye height follow the costume client-side,
+     * so a three-block monster sees and collides like one.
+     *
+     * <p>Every costume works this way; they differ only in the model and the measurements taken off
+     * it. {@link #setVerityMonster(Player, UUID, float, int)} is this with
+     * {@link MonsterCostume#VERITY} and remains for the callers that predate the rest.
+     *
+     * @param player the player who will see the monster
+     * @param entityUuid the UUID of the entity to replace
+     * @param costume which monster to dress it as
+     * @param height the model's height in blocks; {@code <= 0} falls back to 2
+     * @param hue 0 for the texture's own colours, otherwise a 1-360 hue tint
+     */
+    default void setMonster(Player player, UUID entityUuid, MonsterCostume costume, float height, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Applies a costume at two blocks tall with no tint. */
+    default void setMonster(Player player, UUID entityUuid, MonsterCostume costume) {
+        setMonster(player, entityUuid, costume, 2.0f, 0);
+    }
+
+    /** Removes one costume from an entity, restoring its normal rendering. */
+    default void removeMonster(Player player, UUID entityUuid, MonsterCostume costume) {
+    }
+
+    /** Removes every entity wearing this costume, for this viewer. */
+    default void clearMonsters(Player player, MonsterCostume costume) {
+    }
+
+    /** Resizes a costume already on an entity. */
+    default void setMonsterHeight(Player player, UUID entityUuid, MonsterCostume costume, float height) {
+    }
+
+    /** Tints a costume already on an entity. 0 restores the texture's own colours. */
+    default void setMonsterHue(Player player, UUID entityUuid, MonsterCostume costume, int hue) {
+    }
+
+    /** Puts a costume on all fours, for the ones whose rig has a crawl. */
+    default void setMonsterCrawling(Player player, UUID entityUuid, MonsterCostume costume, boolean crawling) {
+    }
+
+    /** Whether the wearer sees their own costume in first person. */
+    default void setMonsterFirstPerson(Player player, UUID entityUuid, MonsterCostume costume, boolean visible) {
+    }
+
+    /**
+     * Plays one of the costume's clips by name, holding it until
+     * {@link #clearMonsterAnimation(Player, UUID, MonsterCostume)}.
+     *
+     * <p>By name rather than by enum because the clip sets differ: the GMOD entity alone has 28, of
+     * which six map onto Lectern's shared names and the rest only exist on that rig.
+     *
+     * @param cameraViewer a player whose camera the monster's own camera track takes over for the
+     *     length of the clip, or null to leave every camera alone
+     */
+    default void playMonsterClip(Player player, UUID entityUuid, MonsterCostume costume, String clip,
+                                 UUID cameraViewer) {
+    }
+
+    /** As {@link #playMonsterClip(Player, UUID, MonsterCostume, String, UUID)}, taking nobody's camera. */
+    default void playMonsterClip(Player player, UUID entityUuid, MonsterCostume costume, String clip) {
+        playMonsterClip(player, entityUuid, costume, clip, null);
+    }
+
+    /** Releases a held clip and lets locomotion take the model back. */
+    default void clearMonsterAnimation(Player player, UUID entityUuid, MonsterCostume costume) {
+    }
+
+    /** Renders a victim in the monster's hands. */
+    default void monsterGrab(Player player, UUID entityUuid, MonsterCostume costume, UUID victim) {
+    }
+
+    /** Lets go of whoever the monster was holding. */
+    default void monsterRelease(Player player, UUID entityUuid, MonsterCostume costume) {
+    }
+
+    // --- Verity Monster ---
+
+    /**
+     * Replaces an entity's rendering with the Verity monster on the target player's client —
+     * a fully animated character model drawn in place of the entity's own.
+     * <p>
+     * Purely visual, like the ball: the entity keeps its real model server-side and its AI and
+     * movement are untouched. The client animates it from the entity's own motion, cross-fading
+     * idle, walk and run by speed and driving the stride from ground covered rather than from
+     * the clock, so it stays in step at any size or movement speed. Its hitbox and eye height
+     * follow the costume client-side, so a three-block monster sees and collides like one.
+     *
+     * @param player the player who will see the monster
+     * @param entityUuid the UUID of the entity to replace
+     * @param height the model's height in blocks; {@code <= 0} falls back to 2
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityMonster(Player player, UUID entityUuid, float height, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Applies the Verity monster at two blocks tall with no tint. */
+    default void setVerityMonster(Player player, UUID entityUuid) {
+        setVerityMonster(player, entityUuid, 2.0f, 0);
+    }
+
+    /** Removes the Verity monster from an entity, restoring its normal rendering. */
+    default void removeVerityMonster(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Clears every Verity monster on the target player's client. */
+    default void clearVerityMonsters(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Resizes a monster already being rendered.
+     *
+     * @param height the model's height in blocks; the hitbox and eye height follow it
+     */
+    default void setVerityMonsterHeight(Player player, UUID entityUuid, float height) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Tints a monster already being rendered.
+     *
+     * @param hue 0 for the texture's own colors, otherwise a 1-360 hue tint
+     */
+    default void setVerityMonsterHue(Player player, UUID entityUuid, int hue) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Switches the monster between standing and crawling.
+     * <p>
+     * Crawling swaps the whole locomotion set, not just the pose: it idles and moves on all
+     * fours, and its hitbox and eye height drop to match — the crawl is barely a third as tall
+     * as the stance and correspondingly wider.
+     */
+    default void setVerityMonsterCrawling(Player player, UUID entityUuid, boolean crawling) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Whether a player wearing the monster sees their own model in first person.
+     * <p>
+     * With this on the camera rides the model's head, so the view moves with the animation
+     * rather than floating while the head swings around it, and the head geometry is dropped
+     * so the wearer isn't looking at the inside of its own face.
+     *
+     * @param entityUuid the costumed entity; only meaningful for the viewing player themselves
+     */
+    default void setVerityMonsterFirstPerson(Player player, UUID entityUuid, boolean visible) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Plays a clip once over the top of the monster's locomotion, which resumes when it ends.
+     *
+     * @param clip the animation to play
+     */
+    default void playVerityMonsterClip(Player player, UUID entityUuid, VerityClip clip) {
+        playVerityMonsterClip(player, entityUuid, clip, null);
+    }
+
+    /**
+     * Plays a clip once, optionally handing that clip's own camera to a chosen player.
+     * <p>
+     * Only {@link VerityClip#JUMPSCARE} carries a camera. Naming a viewer puts that player
+     * behind it for the length of the clip — dropped to the floor in front of the monster,
+     * looking back up at it — and returns control when it ends. Everyone else watches from
+     * wherever they are.
+     *
+     * @param cameraViewer the player whose camera the clip takes over, or null for nobody
+     */
+    default void playVerityMonsterClip(Player player, UUID entityUuid, VerityClip clip, UUID cameraViewer) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Holds a clip indefinitely, overriding the automatic locomotion until released.
+     *
+     * @see #clearVerityMonsterAnimation(Player, UUID)
+     */
+    default void setVerityMonsterAnimation(Player player, UUID entityUuid, VerityClip clip) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Releases a held clip, handing the monster back to automatic locomotion. */
+    default void clearVerityMonsterAnimation(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Renders an entity in the monster's hands until released.
+     * <p>
+     * The held entity is relocated rather than redrawn, so its skin, armour and animation come
+     * along unchanged; its real position and collision are untouched. Grabbing also clears any
+     * corpse left from a previous scare, so the same victim can be caught again.
+     * <p>
+     * A grabbed victim is what makes {@link VerityClip#JUMPSCARE} a kill rather than a
+     * gesture: the bite lands partway through the clip and leaves a corpse behind.
+     *
+     * @param victimUuid the entity to hold
+     */
+    default void verityMonsterGrab(Player player, UUID entityUuid, UUID victimUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Lets go of whoever the monster is holding, without biting them. */
+    default void verityMonsterRelease(Player player, UUID entityUuid) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    // --- Player Ragdolls ---
+
+    /**
+     * Drops a simulated corpse on the target player's client, wearing another player's skin.
+     * <p>
+     * The corpse is a <b>prop, not a replacement</b>. The player it is cloned from is left
+     * entirely alone — still rendered, still themselves — so a body can lie at their feet
+     * while they stand over it, several corpses can wear the same skin, and one viewer can be
+     * shown a corpse that nobody else sees.
+     * <p>
+     * It falls under gravity, collides with the world, and is jointed so it folds like a body
+     * rather than through itself. The skin is looked up from the player list, so the player
+     * being cloned need not be loaded, visible, or nearby.
+     * <p>
+     * Verity's bite spawns one of these itself, positioned from where the victim's head was.
+     * This is the direct route, for deaths that have nothing to do with a monster.
+     *
+     * @param player the player who will see the corpse
+     * @param ragdollId the corpse's own handle, used to remove it later. Independent of whose
+     *                  skin it wears, so the same player can be cloned repeatedly
+     * @param skinSource the player whose skin the corpse wears
+     * @param location where the corpse's feet start, and the direction it faces
+     * @param height the corpse's height in blocks; 1.8 matches a normal player
+     * @param beheaded whether it appears without a head — the head is gone rather than
+     *                 detached, so nothing falls
+     */
+    default void spawnPlayerRagdoll(Player player, UUID ragdollId, UUID skinSource, Location location, double height, boolean beheaded) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Drops an intact corpse at player height, wearing {@code skinSource}'s skin. */
+    default void spawnPlayerRagdoll(Player player, UUID ragdollId, UUID skinSource, Location location) {
+        spawnPlayerRagdoll(player, ragdollId, skinSource, location, 1.8, false);
+    }
+
+    /** Removes a corpse by its own id. The player it was cloned from is unaffected. */
+    default void removePlayerRagdoll(Player player, UUID ragdollId) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /** Clears every corpse on the target player's client. */
+    default void clearPlayerRagdolls(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /**
  * Manages screen-level effects for players running the Lectern client mod.
- * Controls flash overlays, shaders, and screen-space effects.
+ * Controls flash overlays, shaders, xray, and screen-space effects.
  */
 public interface IScreenManager {
 
@@ -30,6 +30,32 @@ public interface IScreenManager {
     void flash(Player player, int red, int green, int blue, int alpha, int layer, float durationIn, float durationStay, float durationOut);
 
     /**
+     * Enables or disables the xray effect on the player's client.
+     *
+     * @param player the target player
+     * @param enabled whether to enable xray
+     * @param range the render range in blocks (only used when enabling)
+     */
+    void setXray(Player player, boolean enabled, int range);
+
+    /**
+     * Adds a block type to the xray highlight list.
+     *
+     * @param player the target player
+     * @param material the block identifier (e.g. "minecraft:iron_ore")
+     * @param red red highlight color (0-255)
+     * @param green green highlight color (0-255)
+     * @param blue blue highlight color (0-255)
+     */
+    void addXrayBlock(Player player, String material, int red, int green, int blue);
+
+    /**
+     * Removes a block type from the xray highlight list.
+     */
+    void removeXrayBlock(Player player, String material);
+
+
+    /**
      * Forces a shader pack on the player's client. The shader pack must be available
      * as a ZIP file at {@code assets/lectern/shader-templates/<shaderName>.zip}, either
      * bundled in the Lectern mod or provided via a server resource pack.
@@ -47,6 +73,32 @@ public interface IScreenManager {
      * @param player the target player
      */
     void stopForceShader(Player player);
+
+    /**
+     * Plays the Backrooms intro on the player's client: a pause on black, a long fall with the
+     * camera rolling, then a landing. It runs about 17 seconds and takes the screen with it, hiding
+     * the HUD and locking movement, chat, inventory and the player list for the duration.
+     *
+     * <p>The client ends it by itself and says nothing when it does, so a caller that needs to act
+     * on the landing (moving the player while the screen is black, say) works off its own clock.
+     * Nothing is re-sent on a relog: someone who reconnects mid-fall comes back to an ordinary
+     * screen rather than the middle of a cutscene.
+     *
+     * @param player the target player
+     */
+    default void startBackroomsCutscene(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Cuts the Backrooms intro short, handing back the camera, the HUD and the keys. Safe to call
+     * when nothing is playing.
+     *
+     * @param player the target player
+     */
+    default void stopBackroomsCutscene(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 
     /**
      * Enables the motion blur effect with the specified intensity.
@@ -113,6 +165,7 @@ public interface IScreenManager {
      * @param viewer the player whose swap effects should be cleared
      */
     void clearSwapHands(Player viewer);
+
 
     /**
      * Displays the player's hand held out with an item floating and spinning above it.

@@ -51,6 +51,27 @@ public interface IEnvironmentManager {
     void setTrueDarkness(Player player, boolean enabled);
 
     /**
+     * Shows how much light is left, beside the hotbar.
+     *
+     * <p>For a scenario whose battery is a resource rather than a detail. A line on the action bar
+     * says what just happened; this says where the player stands, which is the question they
+     * actually have — whether there is enough left to go further in.
+     *
+     * <p>Which side it lands on is the client's decision, not this one: it sits on the main-hand
+     * side, opposite the off-hand slot, and the server has no idea which hand anybody uses.
+     *
+     * @param charge what is left, 0 to 1
+     * @param beamOn whether the light is actually running, which is drawn differently from a full
+     *               battery sitting idle
+     */
+    default void setFlashlightIndicator(Player player, float charge, boolean beamOn) {
+    }
+
+    /** Takes it off screen. */
+    default void clearFlashlightIndicator(Player player) {
+    }
+
+    /**
      * Enables or disables dynamic lighting on the player's client. When enabled,
      * entities holding light-emitting items (torches, lanterns, glowstone, etc.)
      * cast block-light onto nearby surfaces.
