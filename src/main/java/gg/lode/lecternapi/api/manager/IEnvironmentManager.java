@@ -35,6 +35,22 @@ public interface IEnvironmentManager {
     void resetSkyColor(Player player);
 
     /**
+     * Tints the rain on the player's client. It is drawn from Lectern's own texture, so a resource
+     * pack that restyles rain does not change it. With everywhere set it also rains in biomes that
+     * never do, and as rain instead of snow. The world still has to be raining.
+     *
+     * @param alpha 0 to 1, multiplied into the rain's own fade
+     */
+    default void setRainColor(Player player, int red, int green, int blue, float alpha, boolean everywhere) {
+    }
+
+    /**
+     * Puts the rain back to normal.
+     */
+    default void resetRainColor(Player player) {
+    }
+
+    /**
      * Overrides the moon color on the player's client.
      */
     void setMoonColor(Player player, int red, int green, int blue);
