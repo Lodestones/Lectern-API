@@ -267,4 +267,48 @@ public interface IAuraManager {
     default void clearScanPulses(Player player) {
         // Backward-compatible no-op fallback; the real implementation overrides this.
     }
+
+    // --- World effects (depth-reconstructed disaster visuals) ---
+
+    /**
+     * Plays a world effect, or updates the one already playing under this id.
+     *
+     * <p>Sending the same id again moves it and changes its parameters without restarting it, so a
+     * moving effect is updated rather than replayed. Clients without the mod get nothing.
+     *
+     * @param player   the target player
+     * @param id       names the effect, to update or stop it
+     * @param kind     what it draws, see {@link WorldFxKind} for what scale and p0..p3 mean
+     * @param x        the anchor's world x
+     * @param y        the anchor's world y
+     * @param z        the anchor's world z
+     * @param scale    its main size, per kind
+     * @param duration seconds it runs for, 0 until stopped
+     * @param age      seconds it has already been running, so a late viewer joins it in step
+     * @param argb     its colour; an alpha of 0 reads as opaque
+     */
+    default void playWorldFx(Player player, String id, WorldFxKind kind, double x, double y, double z,
+                             float scale, float duration, float age, int argb,
+                             float p0, float p1, float p2, float p3) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Fades a world effect out by its identifier.
+     *
+     * @param player the target player
+     * @param id     the effect identifier
+     */
+    default void stopWorldFx(Player player, String id) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
+
+    /**
+     * Removes every world effect on the target player's client at once.
+     *
+     * @param player the target player
+     */
+    default void clearWorldFx(Player player) {
+        // Backward-compatible no-op fallback; the real implementation overrides this.
+    }
 }
