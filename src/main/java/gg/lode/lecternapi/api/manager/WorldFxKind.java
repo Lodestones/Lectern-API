@@ -27,7 +27,13 @@ public enum WorldFxKind {
     /** A moving wall of water or dust. p0, p1: its heading on x and z. scale: height. p2: depth in blocks. */
     WALL("wall"),
     /** A tint over the whole view. p0: heat shimmer. p1: frost at the edges. p2: saturation, 1 unchanged. */
-    GRADE("grade");
+    GRADE("grade"),
+    /**
+     * A black hole that bends the world behind it, with its disk and jets. scale: the shadow's radius
+     * in blocks. A white colour gives the classic orange disk, any other colour recolours it.
+     * Clients drawing it hide the resource pack's black hole display on the same spot.
+     */
+    BLACK_HOLE("black_hole");
 
     private final String id;
 
